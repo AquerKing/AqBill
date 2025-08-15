@@ -1,0 +1,59 @@
+{
+    "@@locale": "zh",
+    "@@author": "AquerKing",
+    "@@last_modified": "2025/8/14",
+    "@@comment": "",
+    "@@context": "",
+    "bottomNavigatorBar_Home_Label": "主页",
+    "@bottomNavigatorBar_Home_Label": {
+        "description": ""
+    },
+    "bottomNavigatorBar_History_Label": "历史",
+    "@bottomNavigatorBar_History_Label": {},
+    "bottomNavigatorBar_Data_Label": "数据",
+    "@bottomNavigatorBar_Data_Label": {},
+    "homePage_SummarizationCard_Summarization": "截至目前，您已经花了 {cost}{currencySign}，赚了 {earned}{currencySign}",
+    "@homePage_SummarizationCard_Summarization": {
+        "placeholders": {
+            "cost": {
+                "type": "int"
+            },
+            "earned": {
+                "type": "int"
+            },
+            "currencySign": {
+                "type": "String"
+            }
+        }
+    },
+    "appDrawer_SettingsTextHint": "设置",
+    "@appDrawer_SettingsTextHint": {},
+    "appDrawer_AboutTextHint": "关于",
+    "@appDrawer_AboutTextHint": {},
+    "homePage_SummarizationCard_TotalAvailableBudgetTextHint": "可用预算",
+    "@homePage_SummarizationCard_TotalAvailableBudgetTextHint": {},
+    "homePage_SummarizationCard_AvailableBudgetTextHint": "支出",
+    "@homePage_SummarizationCard_AvailableBudgetTextHint": {},
+    "homePage_SummarizationCard_EarnedTextHint": "收入",
+    "@homePage_SummarizationCard_EarnedTextHint": {},
+    "insertRecordDialog_Title": "添加记录",
+    "@insertRecordDialog_Title": {},
+    "insertRecordDialog_SegmentedButton_CostTextHint": "支出",
+    "@insertRecordDialog_SegmentedButton_CostTextHint": {},
+    "insertRecordDialog_SegmentedButton_EarnedTextHint": "收入",
+    "@insertRecordDialog_SegmentedButton_EarnedTextHint": {},
+    "insertRecordDialog_TextField_AmountTextHint": "金额",
+    "@insertRecordDialog_TextField_AmountTextHint": {},
+    "insertRecordDialog_TextField_CommentTextHint": "备注",
+    "@insertRecordDialog_TextField_CommentTextHint": {},
+    "insertRecordDialog_Button_Add_Label": "添加",
+    "@insertRecordDialog_Button_Add_Label": {},
+    "insertRecordDialog_Button_Cancel_Label": "取消",
+    "@insertRecordDialog_Button_Cancel_Label": {},
+    "transactionCard_BottomMenu_Option_ModifyTextHint": "修改",
+    "@transactionCard_BottomMenu_Option_ModifyTextHint": {},
+    "transactionCard_BottomMenu_Option_DeleteTextHint": "删除",
+    "@transactionCard_BottomMenu_Option_DeleteTextHint": {},
+    "transactionCard_BottomMenu_Button_CancelTextHint": "取消",
+    "@transactionCard_BottomMenu_Button_CancelTextHint": {}
+}

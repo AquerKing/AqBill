@@ -1,3 +1,12 @@
 arb-dir: lib/l10n
 template-arb-file: app_en.arb
 output-localization-file: app_localizations.dart
+output-class: AppLocalizations
+output-dir: lib/l10n/
+untranslated-messages-file: missing_translations.csv
+synthetic_package: false
+
+supported-locales:
+  - en-US    # 英语-美国
+  - zh-Hans-CN  # 简体中文-中国大陆
+  - zh-Hant-TW  # 繁体中文-台湾

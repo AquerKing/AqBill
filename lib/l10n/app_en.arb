@@ -3,5 +3,61 @@
     "@@author": "AquerKing",
     "@@last_modified": "2025/7/7",
     "@@comment": "",
-    "@@context": ""
+    "@@context": "",
+    "bottomNavigatorBar_Home_Label": "Home",
+    "@bottomNavigatorBar_Home_Label": {
+        "description": ""
+    },
+    "bottomNavigatorBar_History_Label": "History",
+    "@bottomNavigatorBar_History_Label": {},
+    "bottomNavigatorBar_Data_Label": "Data",
+    "@bottomNavigatorBar_Data_Label": {},
+    "homePage_SummarizationCard_Summarization": "Up to now, you've cost {cost}{currencySign}, earned {earned}{currencySign}",
+    "@homePage_SummarizationCard_Summarization": {
+        "placeholders": {
+            "cost": {
+                "type": "int"
+            },
+            "earned": {
+                "type": "int"
+            },
+            "currencySign": {
+                "type": "String"
+            }
+        }
+    },
+    "appDrawer_SettingsTextHint": "Settings",
+    "@appDrawer_SettingsTextHint": {},
+    "appDrawer_AboutTextHint": "About",
+    "@appDrawer_AboutTextHint": {},
+    "homePage_SummarizationCard_TotalAvailableBudgetTextHint": "Total",
+    "@homePage_SummarizationCard_TotalAvailableBudgetTextHint": {},
+    "homePage_SummarizationCard_AvailableBudgetTextHint": "Available",
+    "@homePage_SummarizationCard_AvailableBudgetTextHint": {},
+    "homePage_SummarizationCard_EarnedTextHint": "Earned",
+    "@homePage_SummarizationCard_EarnedTextHint": {},
+    "insertRecordDialog_Title": "Add Record",
+    "@insertRecordDialog_Title": {},
+    "insertRecordDialog_SegmentedButton_CostTextHint": "Cost",
+    "@insertRecordDialog_SegmentedButton_CostTextHint": {},
+    "insertRecordDialog_SegmentedButton_EarnedTextHint": "Earned",
+    "@insertRecordDialog_SegmentedButton_EarnedTextHint": {},
+    "insertRecordDialog_TextField_AmountTextHint": "Amount",
+    "@insertRecordDialog_TextField_AmountTextHint": {},
+    "insertRecordDialog_TextField_CommentTextHint": "Comment",
+    "@insertRecordDialog_TextField_CommentTextHint": {},
+    "insertRecordDialog_Button_Add_Label": "Add",
+    "@insertRecordDialog_Button_Add_Label": {},
+    "insertRecordDialog_Button_Cancel_Label": "Cancel",
+    "@insertRecordDialog_Button_Cancel_Label": {},
+    "transactionCard_BottomMenu_Option_ModifyTextHint": "Modify",
+    "@transactionCard_BottomMenu_Option_ModifyTextHint": {},
+    "modifyRecordDialog_Title": "Modify Record",
+    "@modifyRecordDialog_Title": {},
+    "modifyRecordDialog_Button_Modify_Label": "Modify",
+    "@modifyRecordDialog_Button_Modify_Label": {},
+    "transactionCard_BottomMenu_Option_DeleteTextHint": "Delete",
+    "@transactionCard_BottomMenu_Option_DeleteTextHint": {},
+    "transactionCard_BottomMenu_Button_CancelTextHint": "Cancel",
+    "@transactionCard_BottomMenu_Button_CancelTextHint": {}
 }
