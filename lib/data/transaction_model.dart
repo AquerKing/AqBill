@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:bill/data/category_model.dart';
+import 'package:bill/extension/date_getter.dart';
 import 'package:bill/extension/id_generator.dart';
 import 'package:bill/manager/category_manager.dart';
 import 'package:bill/manager/transcation_repository.dart';
@@ -31,7 +32,7 @@ class TransactionModel {
   int amount = 0;
   CategoryModel? category;
   String comment = '';
-  int date = int.parse(TranscationRepository().getCurrentDateString());
+  int date = DateGetter.getTodaysDateNumber();
 
   bool get isExpense {
     return category!.id >= 10000 && category!.id < 20000;

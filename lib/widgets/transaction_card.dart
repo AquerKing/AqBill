@@ -5,6 +5,7 @@ import 'package:bill/l10n/app_localizations.dart';
 import 'package:bill/resources/svg_icon.dart';
 import 'package:flutter/material.dart';
 
+@Deprecated('此组件已废弃，请改用TransactionItem')
 class TransactionCard extends Card {
   const TransactionCard(
     this.model, {
@@ -23,6 +24,7 @@ class TransactionCard extends Card {
       onLongPress: () => _showActionMenu(context),
       // onTap: () {},
       child: Card(
+        color: Colors.white,
         child: Container(
           padding: const EdgeInsets.all(6),
           child: Row(
@@ -69,10 +71,7 @@ class TransactionCard extends Card {
                 // 修改选项
                 ListTile(
                   leading: const Icon(Icons.edit, color: Colors.blue),
-                  title: Text(
-                    localizations
-                        .transactionCard_BottomMenu_Option_ModifyTextHint,
-                  ),
+                  title: Text(localizations.general_Modify),
                   onTap: () {
                     Navigator.pop(context); // 关闭菜单
                     onEdit(model); // 调用修改回调
@@ -82,8 +81,7 @@ class TransactionCard extends Card {
                 ListTile(
                   leading: SvgIcon(SvgIcons.trash_can),
                   title: Text(
-                    localizations
-                        .transactionCard_BottomMenu_Option_DeleteTextHint,
+                    localizations.general_Delete,
                     style: TextStyle(color: Colors.red),
                   ),
                   onTap: () {
@@ -104,10 +102,7 @@ class TransactionCard extends Card {
                       minimumSize: const Size.fromHeight(48),
                     ),
                     onPressed: () => Navigator.pop(context),
-                    child: Text(
-                      localizations
-                          .transactionCard_BottomMenu_Button_CancelTextHint,
-                    ),
+                    child: Text(localizations.general_Cancel),
                   ),
                 ),
               ],

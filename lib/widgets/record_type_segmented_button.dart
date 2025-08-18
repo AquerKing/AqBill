@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:bill/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
@@ -38,15 +36,11 @@ class _RecordTypeSegmentedButtonState extends State<RecordTypeSegmentedButton> {
       segments: <ButtonSegment<bool>>[
         ButtonSegment<bool>(
           value: true,
-          label: Text(
-            localizations.insertRecordDialog_SegmentedButton_CostTextHint,
-          ),
+          label: Text(localizations.general_Cost),
         ),
         ButtonSegment<bool>(
           value: false,
-          label: Text(
-            localizations.insertRecordDialog_SegmentedButton_EarnedTextHint,
-          ),
+          label: Text(localizations.general_Earned),
         ),
       ],
       selected: <bool>{isExpense},

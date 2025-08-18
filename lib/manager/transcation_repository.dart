@@ -1,36 +1,36 @@
 import 'dart:core';
 
+import 'package:bill/extension/date_getter.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bill/data/transaction_model.dart';
-import 'package:bill/extension/lru_cache.dart';
 import 'package:bill/manager/database_agent.dart';
 
-class TranscationRepository extends ChangeNotifier {
-  TranscationRepository._internal();
-  static final TranscationRepository _instance =
-      TranscationRepository._internal();
-  factory TranscationRepository() => _instance;
+class TransactionRepository extends ChangeNotifier {
+  TransactionRepository._internal();
+  static final TransactionRepository _instance =
+      TransactionRepository._internal();
+  factory TransactionRepository() => _instance;
 
   // final LruCache<String, List<TransactionModel>> _lruCache =
   //     LruCache<String, List<TransactionModel>>(maxSize: 64);
 
-  List<TransactionModel> _records = [];
+  List<TransactionModel> _todaysRecords = [];
 
   int get count {
-    return _records.length;
+    return _todaysRecords.length;
   }
 
   List<TransactionModel> get records {
-    return _records;
+    return _todaysRecords;
   }
 
   Future<void> updateTodaysRecords() async {
     List<Map<String, dynamic>> rawRecords = await fetchByDate(
-      getCurrentDateString(),
+      DateGetter.getTodaysDateString(),
     );
 
-    _records =
+    _todaysRecords =
         rawRecords.map((element) {
           return TransactionModel.fromMap(element);
         }).toList();
@@ -40,7 +40,7 @@ class TranscationRepository extends ChangeNotifier {
 
   Future<List<TransactionModel>> fetchTodaysRecords() async {
     List<Map<String, dynamic>> rawRecords = await fetchByDate(
-      getCurrentDateString(),
+      DateGetter.getTodaysDateString(),
     );
 
     return rawRecords.map((element) {
@@ -58,21 +58,25 @@ class TranscationRepository extends ChangeNotifier {
   }
 
   /// 获取指定日期段的交易记录
-  List<TransactionModel> fetchByPeriod({String? start, String? end}) {
-    notifyListeners();
-    return [];
+  Future<List<TransactionModel>> fetchByPeriod(int period) async {
+    List<Map<String, dynamic>> rawRecords = await DatabaseAgent().fetchByDate(
+      period.toString(),
+    );
+
+    if (rawRecords.isEmpty) {
+      return [];
+    }
+
+    List<TransactionModel> records =
+        rawRecords.map((element) {
+          return TransactionModel.fromMap(element);
+        }).toList();
+
+    return records;
   }
 
   List<TransactionModel> fetchByCategory() {
     notifyListeners();
     return [];
-  }
-
-  String getCurrentDateString() {
-    DateTime dateTime = DateTime.now();
-    String year = dateTime.year.toString().padLeft(4, '0');
-    String month = dateTime.month.toString().padLeft(2, '0');
-    String day = dateTime.day.toString().padLeft(2, '0');
-    return "$year$month$day";
   }
 }

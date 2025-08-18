@@ -7,9 +7,8 @@ import 'package:bill/extension/metrics.dart';
 import 'package:bill/l10n/app_localizations.dart';
 import 'package:bill/manager/database_agent.dart';
 import 'package:bill/manager/transcation_repository.dart';
-import 'package:bill/resources/svg_icon.dart';
 import 'package:bill/widgets/reusable_transaction_dialog.dart';
-import 'package:bill/widgets/transaction_card.dart';
+import 'package:bill/widgets/transaction_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -25,7 +24,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final ScrollController _scrollController = ScrollController();
   bool _isCollapsed = false;
-  final double _expandedHeight = 150.0;
+  final double _expandedHeight = 180.0;
   final double _collapsedHeight = 0.0;
   final double _scrollThreshold = 20.0;
 
@@ -73,40 +72,25 @@ class _HomePageState extends State<HomePage> {
 
     if (transaction != null) {
       DatabaseAgent().insertTransaction(transaction);
-      GlobalDataModel().updateRecord(transaction);
-      TranscationRepository().updateTodaysRecords();
-      // showDialog(
-      //   context: context,
-      //   builder: (context) {
-      //     return AlertDialog(content: Text(transaction.toJson()));
-      //   },
-      // );
-      //   showDialog(
-      //     context: context,
-      //     builder: (context) {
-      //       return AlertDialog(
-      //         content: Text(
-      //           CategoryManager().get(transaction.category!.id).toJson(),
-      //         ),
-      //       );
-      //     },
-      //   );
+      GlobalDataModel().insertRecord(transaction);
+      TransactionRepository().updateTodaysRecords();
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final AppLocalizations localizations = AppLocalizations.of(context)!;
+    final ThemeData theme = Theme.of(context);
 
     final double labelWidth =
         max(
           Metrics.calculateTextWidth(
-            localizations.homePage_SummarizationCard_AvailableBudgetTextHint,
-            const TextStyle(fontSize: 18),
+            localizations.general_Cost,
+            theme.textTheme.titleMedium!.copyWith(fontSize: 20),
           ),
           Metrics.calculateTextWidth(
-            localizations.homePage_SummarizationCard_EarnedTextHint,
-            const TextStyle(fontSize: 18),
+            localizations.general_Earned,
+            theme.textTheme.titleMedium!.copyWith(fontSize: 20),
           ),
         ) +
         5.0;
@@ -136,111 +120,144 @@ class _HomePageState extends State<HomePage> {
               child: Column(
                 spacing: 2,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        localizations
-                            .homePage_SummarizationCard_TotalAvailableBudgetTextHint,
-                        style: const TextStyle(fontSize: 26),
-                      ),
-                      Consumer<GlobalDataModel>(
-                        builder: (context, value, child) {
-                          return Text(
-                            DataFormatter.getAmountLocaleString(
-                              value.get('UserData', 'budget.available'),
+                  // 总计预算使用金额
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          localizations
+                              .homePage_SummarizationCard_TotalAvailableBudgetTextHint,
+                          style: theme.textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 26,
+                          ),
+                        ),
+                        Consumer<GlobalDataModel>(
+                          builder: (context, value, child) {
+                            int availableBudget =
+                                value.get('UserData', 'budget.init') -
+                                value.get('UserData', 'cost.current');
+                            return Text(
+                              DataFormatter.getAmountLocaleString(
+                                availableBudget,
+                              ),
+                              style: theme.textTheme.headlineSmall?.copyWith(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 26,
+                                color:
+                                    availableBudget < 0
+                                        ? Colors.red
+                                        : Colors.green,
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  // 预算使用金额进度条
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: Row(
+                      spacing: 8,
+                      children: [
+                        SizedBox(
+                          width: labelWidth,
+                          child: Text(
+                            localizations.general_Cost,
+                            style: theme.textTheme.titleMedium?.copyWith(
+                              fontSize: 20,
                             ),
-                            style: const TextStyle(fontSize: 26),
-                          );
-                        },
-                      ),
-                    ],
+                            textAlign: TextAlign.start,
+                            softWrap: true,
+                          ),
+                        ),
+                        Expanded(
+                          child: Consumer<GlobalDataModel>(
+                            builder: (context, value, child) {
+                              final int cost =
+                                  value.get<int>('UserData', 'cost.current') ??
+                                  0;
+                              final int budget =
+                                  value.get<int>('UserData', 'budget.init') ??
+                                  0;
+                              double usedProportion =
+                                  budget != 0 ? cost / budget : 0;
+                              usedProportion = usedProportion.clamp(0.0, 1.0);
+                              Color progressColor =
+                                  usedProportion <= 0.6
+                                      ? Colors.green
+                                      : usedProportion <= 0.85
+                                      ? Colors.orange
+                                      : Colors.redAccent;
+                              return LinearProgressIndicator(
+                                value: usedProportion,
+                                minHeight: 8,
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(5),
+                                ),
+                                color: progressColor,
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  Row(
-                    spacing: 8,
-                    children: [
-                      SizedBox(
-                        width: labelWidth,
-                        child: Text(
-                          localizations
-                              .homePage_SummarizationCard_AvailableBudgetTextHint,
-                          style: const TextStyle(fontSize: 18),
-                          textAlign: TextAlign.center,
-                          softWrap: true,
+
+                  // 收入目标金额百分比
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: Row(
+                      spacing: 8,
+                      children: [
+                        SizedBox(
+                          width: labelWidth,
+                          child: Text(
+                            localizations.general_Earned,
+                            textAlign: TextAlign.start,
+                            style: theme.textTheme.titleMedium?.copyWith(
+                              fontSize: 20,
+                            ),
+                            softWrap: true,
+                          ),
                         ),
-                      ),
-                      Expanded(
-                        child: Consumer<GlobalDataModel>(
-                          builder: (context, value, child) {
-                            final int cost =
-                                value.get<int>('UserData', 'cost.current') ?? 0;
-                            final int budget =
-                                value.get<int>('UserData', 'budget.init') ?? 0;
-                            double usedProportion =
-                                budget != 0 ? cost / budget : 0;
-                            usedProportion = usedProportion.clamp(0.0, 1.0);
-                            Color progressColor =
-                                usedProportion <= 0.6
-                                    ? Colors.green
-                                    : usedProportion <= 0.85
-                                    ? Colors.orange
-                                    : Colors.redAccent;
-                            return LinearProgressIndicator(
-                              value: usedProportion,
-                              minHeight: 8,
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(5),
-                              ),
-                              color: progressColor,
-                            );
-                          },
+                        Expanded(
+                          child: Consumer<GlobalDataModel>(
+                            builder: (context, value, child) {
+                              final int earned =
+                                  value.get<int>('UserData', 'earn.current') ??
+                                  0;
+                              final int earningTarget =
+                                  value.get<int>('UserData', 'earn.target') ??
+                                  0;
+                              double proportion =
+                                  earningTarget == 0
+                                      ? (earned > 0 ? double.infinity : 0)
+                                      : earned / earningTarget;
+                              proportion = proportion.clamp(0.0, 1.0);
+                              Color progressColor =
+                                  proportion < 0.2
+                                      ? Colors.redAccent
+                                      : proportion < 0.8
+                                      ? Colors.yellow
+                                      : Colors.green;
+                              return LinearProgressIndicator(
+                                value: proportion,
+                                minHeight: 8,
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(5),
+                                ),
+                                color: progressColor,
+                              );
+                            },
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    spacing: 8,
-                    children: [
-                      SizedBox(
-                        width: labelWidth,
-                        child: Text(
-                          localizations
-                              .homePage_SummarizationCard_EarnedTextHint,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(fontSize: 18),
-                          softWrap: true,
-                        ),
-                      ),
-                      Expanded(
-                        child: Consumer<GlobalDataModel>(
-                          builder: (context, value, child) {
-                            final int earned =
-                                value.get<int>('UserData', 'earn.current') ?? 0;
-                            final int earningTarget =
-                                value.get<int>('UserData', 'earn.target') ?? 0;
-                            double proportion =
-                                earningTarget == 0
-                                    ? (earned > 0 ? double.infinity : 0)
-                                    : earned / earningTarget;
-                            proportion = proportion.clamp(0.0, 1.0);
-                            Color progressColor =
-                                proportion < 0.2
-                                    ? Colors.redAccent
-                                    : proportion < 0.8
-                                    ? Colors.yellow
-                                    : Colors.green;
-                            return LinearProgressIndicator(
-                              value: proportion,
-                              minHeight: 8,
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(5),
-                              ),
-                              color: progressColor,
-                            );
-                          },
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -275,19 +292,20 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Expanded(
-            child: Consumer<TranscationRepository>(
+            child: Consumer2<GlobalDataModel, TransactionRepository>(
               builder: (
                 BuildContext context,
-                TranscationRepository value,
+                GlobalDataModel globalData,
+                TransactionRepository repository,
                 Widget? child,
               ) {
                 return ListView.builder(
                   padding: const EdgeInsets.all(6),
-                  itemCount: value.count,
+                  itemCount: TransactionRepository().count,
                   controller: _scrollController,
                   itemBuilder: (context, index) {
-                    return TransactionCard(
-                      value.records[index],
+                    return TransactionItem(
+                      repository.records[index],
                       onEdit: (model) async {
                         TransactionModel? transaction =
                             await showDialog<TransactionModel>(
@@ -301,42 +319,18 @@ class _HomePageState extends State<HomePage> {
                               },
                             );
                         if (transaction != null) {
-                          DatabaseAgent().deleteTransaction(model);
-                          GlobalDataModel().revertRecord(model);
-                          DatabaseAgent().insertTransaction(transaction);
-                          GlobalDataModel().updateRecord(transaction);
-                          TranscationRepository().updateTodaysRecords();
-                          // TranscationRepository();
-                          // showDialog(
-                          //   context: context,
-                          //   builder: (context) {
-                          //     return AlertDialog(
-                          //       content: Text(transaction.toJson()),
-                          //     );
-                          //   },
-                          // );
-                          // showDialog(
-                          //   context: context,
-                          //   builder: (context) {
-                          //     return AlertDialog(content: Text(model.toJson()));
-                          //   },
-                          // );
-                          //   showDialog(
-                          //     context: context,
-                          //     builder: (context) {
-                          //       return AlertDialog(
-                          //         content: Text(
-                          //           CategoryManager().get(transaction.category!.id).toJson(),
-                          //         ),
-                          //       );
-                          //     },
-                          //   );
+                          DatabaseAgent().modifyTransaction(
+                            model.id,
+                            transaction,
+                          );
+                          repository.updateTodaysRecords();
+                          globalData.updateRecord(transaction, model);
                         }
                       },
                       onDelete: (model) {
                         DatabaseAgent().deleteTransaction(model);
-                        GlobalDataModel().revertRecord(model);
-                        TranscationRepository().updateTodaysRecords();
+                        repository.updateTodaysRecords();
+                        globalData.revertRecord(model);
                       },
                     );
                   },

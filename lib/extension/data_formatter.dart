@@ -70,4 +70,9 @@ abstract class DataFormatter {
         '${isNegative ? '-' : ''}${added.split('').reversed.join('')}.${results[1]}';
     return res;
   }
+
+  static formatDate(int date) {
+    String dateString = date.toString();
+    return '${dateString.substring(0, 4)}/${dateString.substring(4, 6)}/${dateString.substring(6, 8)}';
+  }
 }

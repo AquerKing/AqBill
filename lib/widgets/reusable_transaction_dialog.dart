@@ -8,6 +8,7 @@ import 'package:bill/widgets/record_type_segmented_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 
+// ignore: must_be_immutable
 class ReusableTransactionDialog extends StatefulWidget {
   ReusableTransactionDialog({
     super.key,
@@ -121,8 +122,8 @@ class _ReusableTransactionDialogState extends State<ReusableTransactionDialog>
           child: Text(
             widget.isEditing
                 ? localizations
-                    .modifyRecordDialog_Button_Modify_Label // 编辑按钮
-                : localizations.insertRecordDialog_Button_Add_Label, // 新增按钮
+                    .general_Modify // 编辑按钮
+                : localizations.general_Add, // 新增按钮
           ),
           onPressed: () {
             // 验证金额
@@ -159,7 +160,7 @@ class _ReusableTransactionDialogState extends State<ReusableTransactionDialog>
         ),
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: Text(localizations.insertRecordDialog_Button_Cancel_Label),
+          child: Text(localizations.general_Cancel),
         ),
       ],
     );

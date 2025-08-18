@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:bill/data/transaction_model.dart';
+import 'package:bill/extension/date_getter.dart';
+import 'package:bill/manager/database_agent.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_logger_plus/flutter_logger_plus.dart';
 import 'package:path_provider/path_provider.dart';
@@ -12,7 +14,7 @@ class GlobalDataModel extends ChangeNotifier {
   factory GlobalDataModel() => _instance;
   GlobalDataModel._internal();
 
-  static const String _dataPath = '.aqbill/';
+  // static const String _dataPath = '.aqbill/';
   static const Map<String, String> _dataFileManifest = {
     'UserData': 'user_data.json',
     'UserConfig': 'user_config.json',
@@ -21,13 +23,17 @@ class GlobalDataModel extends ChangeNotifier {
   /// 配置项Json表
   final Map<String, Map<String, dynamic>> _globalJson =
       <String, Map<String, dynamic>>{
-        'UserConfig': {'app.lang': 'en-US', 'currency.sign': '¥'},
+        'UserConfig': {
+          'app.lang': 'en-US',
+          'currency.sign': '¥',
+          'user.name': 'User',
+          'user.join_time': DateGetter.getTodaysFormattedDateString(),
+        },
         'UserData': {
           'earn.current': 0,
+          'earn.target': 0,
           'cost.current': 0,
           'budget.init': 200000,
-          'budget.available': 200000,
-          'earn.target': 0,
         },
       };
 
@@ -45,29 +51,44 @@ class GlobalDataModel extends ChangeNotifier {
     super.dispose();
   }
 
-  void updateRecord(TransactionModel model) {
+  void insertRecord(TransactionModel model) {
     if (model.isExpense) {
       _globalJson['UserData']!['cost.current'] += model.amount;
-      _globalJson['UserData']!['budget.available'] -= model.amount;
     } else {
       _globalJson['UserData']!['earn.current'] += model.amount;
     }
 
-    saveToFiles();
-
+    saveFile('UserData');
     notifyListeners();
   }
 
   void revertRecord(TransactionModel model) {
     if (model.isExpense) {
       _globalJson['UserData']!['cost.current'] -= model.amount;
-      _globalJson['UserData']!['budget.available'] += model.amount;
     } else {
       _globalJson['UserData']!['earn.current'] -= model.amount;
     }
 
-    saveToFiles();
+    saveFile('UserData');
+    notifyListeners();
+  }
 
+  void updateRecord(TransactionModel model, TransactionModel oldModel) {
+    int amount = model.amount;
+    int oldAmount = oldModel.amount;
+    if (model.isExpense && oldModel.isExpense) {
+      _globalJson['UserData']!['cost.current'] += amount - oldAmount;
+    } else if (model.isExpense) {
+      _globalJson['UserData']!['cost.current'] += amount;
+      _globalJson['UserData']!['earn.current'] -= oldAmount;
+    } else if (oldModel.isExpense) {
+      _globalJson['UserData']!['cost.current'] -= oldAmount;
+      _globalJson['UserData']!['earn.current'] += amount;
+    } else {
+      _globalJson['UserData']!['earn.current'] += amount - oldAmount;
+    }
+
+    saveFile('UserData');
     notifyListeners();
   }
 
@@ -193,8 +214,6 @@ class GlobalDataModel extends ChangeNotifier {
   }
 
   Future<void> clearTodaysTransactions() async {
-    _globalJson['UserData']!['budget.available'] =
-        _globalJson['UserData']!['budget.init'];
     _globalJson['UserData']!['cost.current'] = 0;
     _globalJson['UserData']!['earn.current'] = 0;
 

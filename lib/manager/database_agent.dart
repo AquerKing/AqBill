@@ -1,10 +1,6 @@
-import 'dart:convert';
 import 'dart:io';
 
-import 'package:bill/data/category_model.dart';
 import 'package:bill/data/transaction_model.dart';
-import 'package:bill/manager/category_manager.dart';
-import 'package:bill/manager/transcation_repository.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -85,6 +81,20 @@ class DatabaseAgent {
     );
   }
 
+  Future<void> modifyTransaction(int id, TransactionModel record) async {
+    Database db = await _instance.database;
+    await db.update(
+      _transactionTableName,
+      record.toMap(),
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  Future<int> queryTransactionCountByDate(String date) async {
+    return (await fetchByDate(date)).length;
+  }
+
   Future<List<Map<String, dynamic>>> fetchCategories() async {
     final Database db = await _instance.database;
     List<Map<String, dynamic>> categories = await db.query(_categoryTableName);
@@ -92,12 +102,31 @@ class DatabaseAgent {
   }
 
   Future<List<Map<String, dynamic>>> fetchByDate(String date) async {
+    String year = date.substring(0, 4),
+        month = date.substring(4, 6),
+        day = date.substring(6, 8);
+
     Database db = await _instance.database;
-    List<Map<String, dynamic>> records = await db.query(
-      _transactionTableName,
-      where: 'date = ?',
-      whereArgs: [TranscationRepository().getCurrentDateString()],
-    );
+    List<Map<String, dynamic>> records = [];
+    if (month != '00' && day != '00') {
+      records = await db.query(
+        _transactionTableName,
+        where: 'date = ?',
+        whereArgs: [int.parse(date)],
+      );
+    } else if (month == '00') {
+      records = await db.query(
+        _transactionTableName,
+        where: 'date >= ? AND date <= ?',
+        whereArgs: [int.parse('${year}0101'), int.parse('${year}1231')],
+      );
+    } else {
+      records = await db.query(
+        _transactionTableName,
+        where: 'date >= ? AND date <= ?',
+        whereArgs: [int.parse('$year${month}01'), int.parse('$year${month}31')],
+      );
+    }
     return records;
   }
 }
