@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:bill/data/transaction_model.dart';
 import 'package:bill/extension/date_getter.dart';
-import 'package:bill/manager/database_agent.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_logger_plus/flutter_logger_plus.dart';
 import 'package:path_provider/path_provider.dart';
@@ -18,6 +17,7 @@ class GlobalDataModel extends ChangeNotifier {
   static const Map<String, String> _dataFileManifest = {
     'UserData': 'user_data.json',
     'UserConfig': 'user_config.json',
+    'AppData': 'app_data.json',
   };
 
   /// 配置项Json表
@@ -28,6 +28,7 @@ class GlobalDataModel extends ChangeNotifier {
           'currency.sign': '¥',
           'user.name': 'User',
           'user.join_time': DateGetter.getTodaysFormattedDateString(),
+          'app.theme': 'light',
         },
         'UserData': {
           'earn.current': 0,
@@ -35,6 +36,7 @@ class GlobalDataModel extends ChangeNotifier {
           'cost.current': 0,
           'budget.init': 200000,
         },
+        'AppData': {'app.last_run': 202009, 'data.last_archived_year': 2020},
       };
 
   // 生命周期观察者
@@ -52,6 +54,11 @@ class GlobalDataModel extends ChangeNotifier {
   }
 
   void insertRecord(TransactionModel model) {
+    int nowTime = DateGetter.getTodaysYMNumber();
+    if (nowTime != model.date ~/ 100) {
+      return;
+    }
+
     if (model.isExpense) {
       _globalJson['UserData']!['cost.current'] += model.amount;
     } else {
@@ -63,6 +70,11 @@ class GlobalDataModel extends ChangeNotifier {
   }
 
   void revertRecord(TransactionModel model) {
+    DateTime today = DateTime.now();
+    if (model.date ~/ 100 != today.year * 100 + today.month) {
+      return;
+    }
+
     if (model.isExpense) {
       _globalJson['UserData']!['cost.current'] -= model.amount;
     } else {
@@ -82,8 +94,8 @@ class GlobalDataModel extends ChangeNotifier {
       _globalJson['UserData']!['cost.current'] += amount;
       _globalJson['UserData']!['earn.current'] -= oldAmount;
     } else if (oldModel.isExpense) {
-      _globalJson['UserData']!['cost.current'] -= oldAmount;
       _globalJson['UserData']!['earn.current'] += amount;
+      _globalJson['UserData']!['cost.current'] -= oldAmount;
     } else {
       _globalJson['UserData']!['earn.current'] += amount - oldAmount;
     }
@@ -94,7 +106,7 @@ class GlobalDataModel extends ChangeNotifier {
 
   /// 获取指定配置、指定字段值
   T? get<T>(String alias, String field) {
-    if (alias != 'UserData' && alias != 'UserConfig') {
+    if (!_dataFileManifest.containsKey(alias)) {
       return null;
     }
     if (!_globalJson[alias]!.containsKey(field)) {
@@ -106,7 +118,7 @@ class GlobalDataModel extends ChangeNotifier {
 
   /// 设置指定配置、指定字段的值
   bool set<T>(String alias, String field, dynamic value) {
-    if (alias != 'UserData' && alias != 'UserConfig') {
+    if (!_dataFileManifest.containsKey(alias)) {
       return false;
     }
     if (!_globalJson[alias]!.containsKey(field)) {
@@ -116,8 +128,16 @@ class GlobalDataModel extends ChangeNotifier {
       return false;
     }
     _globalJson[alias]![field] = value;
+    saveFile(alias);
+
     notifyListeners();
     return true;
+  }
+
+  void resetMonthData() {
+    _globalJson['UserData']!['earn.current'] = 0;
+    _globalJson['UserData']!['cost.current'] = 0;
+    notifyListeners();
   }
 
   Future<void> _ensureFilesExist() async {
@@ -139,7 +159,7 @@ class GlobalDataModel extends ChangeNotifier {
   }
 
   Future<void> loadFromFiles() async {
-    _ensureFilesExist();
+    await _ensureFilesExist();
 
     final directory = await getApplicationDocumentsDirectory();
 
@@ -151,14 +171,29 @@ class GlobalDataModel extends ChangeNotifier {
       '${directory.path}/${_dataFileManifest['UserData']}',
     );
     rawContent = await targetFile.readAsString();
+    if (rawContent.isEmpty) {
+      return;
+    }
     jsonMap = json.decode(rawContent);
     _globalJson['UserData']!.addAll(jsonMap);
 
     // 读取 UserConfig
     targetFile = File('${directory.path}/${_dataFileManifest['UserConfig']}');
     rawContent = await targetFile.readAsString();
+    if (rawContent.isEmpty) {
+      return;
+    }
     jsonMap = json.decode(rawContent);
     _globalJson['UserConfig']!.addAll(jsonMap);
+
+    // 读取 AppData
+    targetFile = File('${directory.path}/${_dataFileManifest['AppData']}');
+    rawContent = await targetFile.readAsString();
+    if (rawContent.isEmpty) {
+      return;
+    }
+    jsonMap = json.decode(rawContent);
+    _globalJson['AppData']!.addAll(jsonMap);
 
     notifyListeners();
   }
@@ -185,7 +220,7 @@ class GlobalDataModel extends ChangeNotifier {
 
   /// 将指定配置项写入对应文件
   Future<void> saveFile(String alias) async {
-    if (alias != 'UserData' && alias != 'UserConfig') {
+    if (!_dataFileManifest.containsKey(alias)) {
       logger.error('Cannot save unknown configure-\'$alias\'.');
       return;
     }
@@ -198,7 +233,7 @@ class GlobalDataModel extends ChangeNotifier {
 
   /// 从映射文件中读取指定配置项
   Future<void> readFile(String alias) async {
-    if (alias != 'UserData' && alias != 'UserConfig') {
+    if (!_dataFileManifest.containsKey(alias)) {
       logger.error('Cannot read unknown configure-\'$alias\'.');
       return;
     }
@@ -216,8 +251,17 @@ class GlobalDataModel extends ChangeNotifier {
   Future<void> clearTodaysTransactions() async {
     _globalJson['UserData']!['cost.current'] = 0;
     _globalJson['UserData']!['earn.current'] = 0;
+    saveFile('UserData');
 
     notifyListeners();
+  }
+
+  String getJson(String alias) {
+    if (!_dataFileManifest.containsKey(alias)) {
+      return '';
+    }
+
+    return json.encode(_globalJson[alias]!);
   }
 }
 

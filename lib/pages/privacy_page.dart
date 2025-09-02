@@ -21,6 +21,7 @@ class _PrivacyPageState extends State<PrivacyPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(localizations.privacyPage_AppBar_Title)),
+      body: Text('Hello'),
     );
   }
 }

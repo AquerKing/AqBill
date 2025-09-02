@@ -1,5 +1,5 @@
 import 'package:bill/l10n/app_localizations.dart';
-import 'package:bill/manager/category_manager.dart';
+import 'package:bill/mediator/manager/category_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:bill/data/transaction_model.dart';
 import 'transaction_pie_chart.dart'; // 假设之前的饼图组件在这个文件中
@@ -134,16 +134,18 @@ class ChartDetailPage extends StatelessWidget {
               ? localizations.historyPage_StatisticsButton_ExpenseTextHint
               : localizations.historyPage_StatisticsButton_IncomeTextHint,
         ),
-        backgroundColor: isExpense ? Colors.redAccent : Colors.greenAccent,
+        // backgroundColor: isExpense ? Colors.redAccent : Colors.greenAccent,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          // mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             // 显示总金额
-            _buildTotalAmountCard(),
+            _buildTotalAmountCard(localizations),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 12),
 
             // 显示饼状图
             Expanded(
@@ -159,7 +161,7 @@ class ChartDetailPage extends StatelessWidget {
   }
 
   // 构建总金额卡片
-  Widget _buildTotalAmountCard() {
+  Widget _buildTotalAmountCard(AppLocalizations localizations) {
     // 计算总金额
     double totalAmount = 0;
     for (final transaction in transactions) {
@@ -171,79 +173,30 @@ class ChartDetailPage extends StatelessWidget {
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Text(
-              isExpense ? '总支出' : '总收入',
-              style: const TextStyle(fontSize: 16, color: Colors.grey),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              '¥${totalAmount.toStringAsFixed(2)}',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: isExpense ? Colors.redAccent : Colors.greenAccent,
+      child: SizedBox(
+        width: double.infinity,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                isExpense
+                    ? localizations.expenseStatisticsPage_TotalExpenceLabel
+                    : localizations.incomeStatisticsPage_TotalIncomeLabel,
+                style: const TextStyle(fontSize: 16, color: Colors.grey),
               ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// 使用示例
-class ButtonsDemoPage extends StatelessWidget {
-  // 示例交易数据
-  final List<TransactionModel> sampleTransactions = [
-    TransactionModel.optional(
-      amount: 100,
-      category: CategoryManager().get(10001),
-      date: '20231001',
-    ),
-    TransactionModel.optional(
-      amount: 200,
-      category: CategoryManager().get(10002),
-      date: '20231002',
-    ),
-    TransactionModel.optional(
-      amount: 150,
-      category: CategoryManager().get(10003),
-      date: '20231003',
-    ),
-    TransactionModel.optional(
-      amount: -1500,
-      category: CategoryManager().get(20001),
-      date: '20231003',
-    ),
-    TransactionModel.optional(
-      amount: -500,
-      category: CategoryManager().get(20002),
-      date: '20231005',
-    ),
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('交易统计')),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          children: [
-            const Text('请选择要查看的统计类型：'),
-            const SizedBox(height: 20),
-
-            // 使用连体按钮组件
-            SizedBox(
-              width: double.infinity,
-              height: 60,
-              child: TransactionChartButtons(transactions: sampleTransactions),
-            ),
-          ],
+              const SizedBox(height: 8),
+              Text(
+                '¥${totalAmount.toStringAsFixed(2)}',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: isExpense ? Colors.redAccent : Colors.greenAccent,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

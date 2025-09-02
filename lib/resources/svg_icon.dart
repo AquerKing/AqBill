@@ -62,7 +62,6 @@ class SvgIcon extends StatelessWidget {
   }
 }
 
-// 这个类用于集中管理所有的 SVG 图标，方便像 IconData 一样直接引用
 class SvgIcons {
   static const SvgIconData clothes = SvgIconData(
     'assets/icons/clothes.svg',

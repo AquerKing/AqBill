@@ -262,16 +262,16 @@ class _SegmentedDatePickerState extends State<SegmentedDatePicker> {
   Widget _buildSegmentedDisplay() {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        // color: Colors.white,
         borderRadius: BorderRadius.circular(8),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withValues(alpha: 0.2),
-            spreadRadius: 1,
-            blurRadius: 3,
-            offset: const Offset(0, 1),
-          ),
-        ],
+        // boxShadow: [
+        //   BoxShadow(
+        //     color: Colors.grey.withValues(alpha: 0.2),
+        //     spreadRadius: 1,
+        //     blurRadius: 3,
+        //     offset: const Offset(0, 1),
+        //   ),
+        // ],
       ),
       child: Row(
         children: [

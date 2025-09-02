@@ -1,25 +1,45 @@
 {
     "@@locale": "zh",
     "@@author": "AquerKing",
-    "@@last_modified": "2025/8/14",
+    "@@last_modified": "2025/7/7",
     "@@comment": "",
     "@@context": "",
+    "general_Cancel": "取消",
+    "@general_Cancel": {},
+    "general_Delete": "删除",
+    "@general_Delete": {},
+    "general_Add": "添加",
+    "@general_Add": {},
+    "general_Modify": "修改",
+    "@general_Modify": {},
+    "general_Cost": "支出",
+    "@general_Cost": {},
+    "general_Earned": "收入",
+    "@general_Earned": {},
+    "general_About": "关于",
+    "@general_About": {},
+    "general_Apply": "确认",
+    "@general_Apply": {},
+    "general_Amount": "金额",
+    "@general_Amount": {},
+    "general_NoRecords": "无相关数据",
+    "@general_NoRecords": {},
     "bottomNavigatorBar_Home_Label": "主页",
     "@bottomNavigatorBar_Home_Label": {
         "description": ""
     },
     "bottomNavigatorBar_History_Label": "历史",
     "@bottomNavigatorBar_History_Label": {},
-    "bottomNavigatorBar_Data_Label": "数据",
-    "@bottomNavigatorBar_Data_Label": {},
-    "homePage_SummarizationCard_Summarization": "截至目前，您已经花了 {cost}{currencySign}，赚了 {earned}{currencySign}",
+    "bottomNavigatorBar_Mine_Label": "我的",
+    "@bottomNavigatorBar_Mine_Label": {},
+    "homePage_SummarizationCard_Summarization": "截至目前，你已经花费了{currencySign}{cost}，赚了{currencySign}{earned}",
     "@homePage_SummarizationCard_Summarization": {
         "placeholders": {
             "cost": {
-                "type": "int"
+                "type": "String"
             },
             "earned": {
-                "type": "int"
+                "type": "String"
             },
             "currencySign": {
                 "type": "String"
@@ -28,32 +48,113 @@
     },
     "appDrawer_SettingsTextHint": "设置",
     "@appDrawer_SettingsTextHint": {},
-    "appDrawer_AboutTextHint": "关于",
-    "@appDrawer_AboutTextHint": {},
-    "homePage_SummarizationCard_TotalAvailableBudgetTextHint": "可用预算",
+    "homePage_SummarizationCard_TotalAvailableBudgetTextHint": "总计",
     "@homePage_SummarizationCard_TotalAvailableBudgetTextHint": {},
-    "homePage_SummarizationCard_AvailableBudgetTextHint": "支出",
-    "@homePage_SummarizationCard_AvailableBudgetTextHint": {},
-    "homePage_SummarizationCard_EarnedTextHint": "收入",
-    "@homePage_SummarizationCard_EarnedTextHint": {},
     "insertRecordDialog_Title": "添加记录",
     "@insertRecordDialog_Title": {},
-    "insertRecordDialog_SegmentedButton_CostTextHint": "支出",
-    "@insertRecordDialog_SegmentedButton_CostTextHint": {},
-    "insertRecordDialog_SegmentedButton_EarnedTextHint": "收入",
-    "@insertRecordDialog_SegmentedButton_EarnedTextHint": {},
     "insertRecordDialog_TextField_AmountTextHint": "金额",
     "@insertRecordDialog_TextField_AmountTextHint": {},
     "insertRecordDialog_TextField_CommentTextHint": "备注",
     "@insertRecordDialog_TextField_CommentTextHint": {},
-    "insertRecordDialog_Button_Add_Label": "添加",
-    "@insertRecordDialog_Button_Add_Label": {},
-    "insertRecordDialog_Button_Cancel_Label": "取消",
-    "@insertRecordDialog_Button_Cancel_Label": {},
-    "transactionCard_BottomMenu_Option_ModifyTextHint": "修改",
-    "@transactionCard_BottomMenu_Option_ModifyTextHint": {},
-    "transactionCard_BottomMenu_Option_DeleteTextHint": "删除",
-    "@transactionCard_BottomMenu_Option_DeleteTextHint": {},
-    "transactionCard_BottomMenu_Button_CancelTextHint": "取消",
-    "@transactionCard_BottomMenu_Button_CancelTextHint": {}
+    "modifyRecordDialog_Title": "修改记录",
+    "@modifyRecordDialog_Title": {},
+    "historyPage_StatisticsButton_ExpenseTextHint": "支出数据",
+    "@historyPage_StatisticsButton_ExpenseTextHint": {},
+    "historyPage_StatisticsButton_IncomeTextHint": "收入数据",
+    "@historyPage_StatisticsButton_IncomeTextHint": {},
+    "historyPage_DatePicker_YearLabel": "年",
+    "@historyPage_DatePicker_YearLabel": {},
+    "historyPage_DatePicker_MonthLabel": "月",
+    "@historyPage_DatePicker_MonthLabel": {},
+    "historyPage_DatePicker_DayLabel": "日",
+    "@historyPage_DatePicker_DayLabel": {},
+    "historyPage_DatePicker_ChooseYearLabel": "选择年份",
+    "@historyPage_DatePicker_ChooseYearLabel": {},
+    "historyPage_DatePicker_ChooseMonthLabel": "选择月份",
+    "@historyPage_DatePicker_ChooseMonthLabel": {},
+    "historyPage_DatePicker_ChooseDayLabel": "选择日期",
+    "@historyPage_DatePicker_ChooseDayLabel": {},
+    "historyPage_NoTransactionFoundLabel": "无相关记录",
+    "@historyPage_NoTransactionFoundLabel": {},
+    "selectableTransactionList_SelectedTextHint": "已选中 {count} 项",
+    "@selectableTransactionList_SelectedTextHint": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "minePage_Option_BudgetLabel": "预算",
+    "@minePage_Option_BudgetLabel": {},
+    "minePage_Option_BudgetExplanationLabel": "设置你的每月预算",
+    "@minePage_Option_BudgetExplanationLabel": {},
+    "minePage_Option_AlarmLabel": "提醒",
+    "@minePage_Option_AlarmLabel": {},
+    "minePage_Option_AlarmExplanationLabel": "提醒你记录收支",
+    "@minePage_Option_AlarmExplanationLabel": {},
+    "minePage_Option_PrivacyAndBackupLabel": "隐私与备份",
+    "@minePage_Option_PrivacyAndBackupLabel": {},
+    "minePage_Option_PrivacyAndBackupExplanationLabel": "保护你的数据",
+    "@minePage_Option_PrivacyAndBackupExplanationLabel": {},
+    "minePage_Option_HelpCenterLabel": "帮助",
+    "@minePage_Option_HelpCenterLabel": {},
+    "minePage_Option_HelpCenterExplanationLabel": "常见问题的解决方案",
+    "@minePage_Option_HelpCenterExplanationLabel": {},
+    "minePage_Option_AboutLabel": "关于",
+    "@minePage_Option_AboutLabel": {},
+    "minePage_Option_AboutExplanationLabel": "关于AqBill",
+    "@minePage_Option_AboutExplanationLabel": {},
+    "minePage_Dialog_SetMonthlyBudgetTitle": "每月预算",
+    "@minePage_Dialog_SetMonthlyBudgetTitle": {},
+    "minePage_Dialog_EditAliasTitle": "修改昵称",
+    "@minePage_Dialog_EditAliasTitle": {},
+    "warning_UnavailableAmount": "请输入正确的金额。",
+    "@warning_UnavailableAmount": {},
+    "warning_UnavailableAlias": "请输入合法昵称。",
+    "@warning_UnavailableAlias": {},
+    "inputHint_Amount": "输入金额",
+    "@inputHint_Amount": {},
+    "inputHint_Alias": "输入昵称",
+    "@inputHint_Alias": {},
+    "settingsPage_AppBar_Title": "设置",
+    "@settingsPage_AppBar_Title": {},
+    "privacyPage_AppBar_Title": "隐私与备份",
+    "@privacyPage_AppBar_Title": {},
+    "aboutPage_AppBar_Title": "关于",
+    "@aboutPage_AppBar_Title": {},
+    "helpPage_AppBar_Title": "帮助",
+    "@helpPage_AppBar_Title": {},
+    "aboutPage_VersionLabel": "版本: {version} ({buildNumber})",
+    "@aboutPage_VersionLabel": {
+        "placeholders": {
+            "version": {
+                "type": "String"
+            },
+            "buildNumber": {
+                "type": "String"
+            }
+        }
+    },
+    "aboutPage_AppDescriptionLabel": "一款简单易用的日常收支记录软件，记录你生活的每一笔花销和收入。",
+    "@aboutPage_AppDescriptionLabel": {},
+    "aboutPage_DeveloperTitle": "开发者",
+    "@aboutPage_DeveloperTitle": {},
+    "settingPage_Title_General": "常规",
+    "@settingPage_Title_General": {},
+    "settingPage_Config_ColorMode": "颜色模式",
+    "@settingPage_Config_ColorMode": {},
+    "settingPage_Config_Language": "语言",
+    "@settingPage_Config_Language": {},
+    "expenseStatisticsPage_TotalExpenceLabel": "总支出",
+    "@expenseStatisticsPage_TotalExpenceLabel": {},
+    "incomeStatisticsPage_TotalIncomeLabel": "总收入",
+    "@incomeStatisticsPage_TotalIncomeLabel": {},
+    "minePage_JoinTimeTextHint": "于 {timeString} 加入 AqBill",
+    "@minePage_JoinTimeTextHint": {
+        "placeholders": {
+            "timeString": {
+                "type": "String"
+            }
+        }
+    }
 }

@@ -4,7 +4,7 @@ import 'package:bill/extension/date_getter.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bill/data/transaction_model.dart';
-import 'package:bill/manager/database_agent.dart';
+import 'package:bill/mediator/manager/database_agent.dart';
 
 class TransactionRepository extends ChangeNotifier {
   TransactionRepository._internal();
@@ -16,6 +16,8 @@ class TransactionRepository extends ChangeNotifier {
   //     LruCache<String, List<TransactionModel>>(maxSize: 64);
 
   List<TransactionModel> _todaysRecords = [];
+
+  List<TransactionModel> periodicRecords = [];
 
   int get count {
     return _todaysRecords.length;
@@ -55,6 +57,27 @@ class TransactionRepository extends ChangeNotifier {
     // }
 
     return await DatabaseAgent().fetchByDate(dateString);
+  }
+
+  /// 获取指定日期段的交易记录
+  Future<void> updateByPeriod(int period) async {
+    List<Map<String, dynamic>> rawRecords = await DatabaseAgent().fetchByDate(
+      period.toString(),
+    );
+
+    if (rawRecords.isEmpty) {
+      periodicRecords = [];
+      notifyListeners();
+      return;
+    }
+
+    List<TransactionModel> records =
+        rawRecords.map((element) {
+          return TransactionModel.fromMap(element);
+        }).toList();
+
+    periodicRecords = records;
+    notifyListeners();
   }
 
   /// 获取指定日期段的交易记录

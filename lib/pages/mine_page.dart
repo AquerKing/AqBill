@@ -1,7 +1,7 @@
 import 'package:bill/data/global_data_model.dart';
 import 'package:bill/extension/date_getter.dart';
 import 'package:bill/l10n/app_localizations.dart';
-import 'package:bill/manager/transcation_repository.dart';
+import 'package:bill/mediator/manager/transaction_repository.dart';
 import 'package:bill/pages/about_page.dart';
 import 'package:bill/pages/help_page.dart';
 import 'package:bill/pages/privacy_page.dart';
@@ -21,9 +21,7 @@ class MinePage extends StatefulWidget {
 
 class _MinePageState extends State<MinePage> {
   // 模拟用户数据
-  String userName = 'User';
-  final String joinDate =
-      'Join on ${DateGetter.getTodaysFormattedDateString()}';
+  String userName = GlobalDataModel().get('UserConfig', 'user.name');
   int monthlyBudget = 200000;
   bool isNotificationEnabled = false;
   bool isBiometricEnabled = false;
@@ -188,6 +186,11 @@ class _MinePageState extends State<MinePage> {
                   if (nameController.text.isNotEmpty) {
                     setState(() {
                       userName = nameController.text;
+                      GlobalDataModel().set(
+                        'UserConfig',
+                        'user.name',
+                        userName,
+                      );
                     });
                     Navigator.pop(context);
                   } else {
@@ -271,7 +274,7 @@ class _MinePageState extends State<MinePage> {
                 gradient:
                     _backgroundImage == null
                         ? const LinearGradient(
-                          colors: [Color(0xFF4A6FFF), Color(0xFF2D5BFF)],
+                          colors: [Colors.teal, Colors.teal],
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                         )
@@ -287,7 +290,7 @@ class _MinePageState extends State<MinePage> {
                       children: [
                         // 用户头像 - 支持点击更换（移除了右下角图标）
                         GestureDetector(
-                          onTap: _pickAvatarImage, // 点击头像选择图片
+                          // onTap: _pickAvatarImage, // 点击头像选择图片
                           child: CircleAvatar(
                             radius: 40,
                             // 优先显示用户选择的头像，否则显示默认头像
@@ -342,7 +345,12 @@ class _MinePageState extends State<MinePage> {
                               const SizedBox(height: 8),
                               // 加入日期
                               Text(
-                                joinDate,
+                                localizations.minePage_JoinTimeTextHint(
+                                  GlobalDataModel().get(
+                                    'UserConfig',
+                                    'user.join_time',
+                                  ),
+                                ),
                                 style: const TextStyle(
                                   color: Colors.white70,
                                   fontSize: 14,
@@ -363,19 +371,19 @@ class _MinePageState extends State<MinePage> {
                   ),
 
                   // 背景修改按钮 - 移动至右下角
-                  Positioned(
-                    bottom: 16,
-                    right: 16,
-                    child: IconButton(
-                      onPressed: _pickBackgroundImage,
-                      icon: const Icon(
-                        Icons.photo_camera,
-                        color: Colors.white54,
-                        size: 24,
-                      ),
-                      tooltip: "更换背景图片",
-                    ),
-                  ),
+                  // Positioned(
+                  //   bottom: 16,
+                  //   right: 16,
+                  //   child: IconButton(
+                  //     onPressed: _pickBackgroundImage,
+                  //     icon: const Icon(
+                  //       Icons.photo_camera,
+                  //       color: Colors.white54,
+                  //       size: 24,
+                  //     ),
+                  //     tooltip: "更换背景图片",
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -399,17 +407,15 @@ class _MinePageState extends State<MinePage> {
                     children: [
                       // 每月预算设置
                       ListTile(
+                        dense: true,
                         leading: Container(
                           width: 40,
                           height: 40,
                           decoration: BoxDecoration(
-                            color: const Color(0xFFE8F4FD),
+                            color: Colors.green[50],
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          child: const Icon(
-                            Icons.money,
-                            color: Color(0xFF2D5BFF),
-                          ),
+                          child: const Icon(Icons.money, color: Colors.green),
                         ),
                         title: Text(
                           localizations.minePage_Option_BudgetLabel,
@@ -428,9 +434,10 @@ class _MinePageState extends State<MinePage> {
                             Text(
                               "¥$displayBudget",
                               style: const TextStyle(
-                                fontSize: 16,
+                                fontSize: 18,
                                 fontWeight: FontWeight.w500,
-                                color: Color(0xFF2D5BFF),
+                                // color: Color(0xFF2D5BFF),
+                                color: Colors.green,
                               ),
                             ),
                             const SizedBox(width: 8),
@@ -443,78 +450,78 @@ class _MinePageState extends State<MinePage> {
                         ),
                         onTap: _showBudgetInputDialog,
                       ),
-                      const Divider(height: 1, indent: 76),
 
                       // 通知设置
-                      ListTile(
-                        leading: Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFFDF2E9),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: const Icon(
-                            Icons.notifications,
-                            color: Color(0xFFFF9F43),
-                          ),
-                        ),
-                        title: Text(
-                          localizations.minePage_Option_AlarmLabel,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        subtitle: Text(
-                          localizations.minePage_Option_AlarmExplanationLabel,
-                          style: TextStyle(fontSize: 12, color: Colors.grey),
-                        ),
-                        trailing: Switch(
-                          value: isNotificationEnabled,
-                          onChanged: (value) {
-                            setState(() {
-                              isNotificationEnabled = value;
-                            });
-                          },
-                          activeColor: const Color(0xFF2D5BFF),
-                        ),
-                      ),
-                      const Divider(height: 1, indent: 76),
+                      // ListTile(
+                      //   dense: true,
+                      //   leading: Container(
+                      //     width: 40,
+                      //     height: 40,
+                      //     decoration: BoxDecoration(
+                      //       color: const Color(0xFFFDF2E9),
+                      //       borderRadius: BorderRadius.circular(12),
+                      //     ),
+                      //     child: const Icon(
+                      //       Icons.notifications,
+                      //       color: Color(0xFFFF9F43),
+                      //     ),
+                      //   ),
+                      //   title: Text(
+                      //     localizations.minePage_Option_AlarmLabel,
+                      //     style: TextStyle(
+                      //       fontSize: 16,
+                      //       fontWeight: FontWeight.w500,
+                      //     ),
+                      //   ),
+                      //   subtitle: Text(
+                      //     localizations.minePage_Option_AlarmExplanationLabel,
+                      //     style: TextStyle(fontSize: 12, color: Colors.grey),
+                      //   ),
+                      //   trailing: Switch(
+                      //     value: isNotificationEnabled,
+                      //     onChanged: (value) {
+                      //       setState(() {
+                      //         isNotificationEnabled = value;
+                      //       });
+                      //     },
+                      //     // activeColor: const Color(0xFF2D5BFF),
+                      //   ),
+                      // ),
 
                       // 隐私设置
-                      ListTile(
-                        leading: Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFF4E8FF),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: const Icon(
-                            Icons.lock,
-                            color: Color(0xFF9C27B0),
-                          ),
-                        ),
-                        title: Text(
-                          localizations.minePage_Option_PrivacyAndBackupLabel,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        subtitle: Text(
-                          localizations
-                              .minePage_Option_PrivacyAndBackupExplanationLabel,
-                          style: TextStyle(fontSize: 12, color: Colors.grey),
-                        ),
-                        trailing: const Icon(
-                          Icons.arrow_forward_ios,
-                          size: 18,
-                          color: Colors.grey,
-                        ),
-                        onTap: () => _navigateToDetail('PrivacyPage'),
-                      ),
+                      // ListTile(
+                      //   dense: true,
+                      //   leading: Container(
+                      //     width: 40,
+                      //     height: 40,
+                      //     decoration: BoxDecoration(
+                      //       color: const Color(0xFFF4E8FF),
+                      //       borderRadius: BorderRadius.circular(12),
+                      //     ),
+                      //     child: const Icon(
+                      //       Icons.lock,
+                      //       color: Color(0xFF9C27B0),
+                      //     ),
+                      //   ),
+                      //   title: Text(
+                      //     localizations.minePage_Option_PrivacyAndBackupLabel,
+                      //     style: TextStyle(
+                      //       fontSize: 16,
+                      //       fontWeight: FontWeight.w500,
+                      //     ),
+                      //   ),
+                      //   subtitle: Text(
+                      //     localizations
+                      //         .minePage_Option_PrivacyAndBackupExplanationLabel,
+                      //     style: TextStyle(fontSize: 12, color: Colors.grey),
+                      //   ),
+                      //   trailing: const Icon(
+                      //     Icons.arrow_forward_ios,
+                      //     size: 18,
+                      //     color: Colors.grey,
+                      //   ),
+                      //   onTap: () => _navigateToDetail('PrivacyPage'),
+                      // ),
                     ],
                   ),
                 ),
@@ -531,80 +538,44 @@ class _MinePageState extends State<MinePage> {
                   ),
                   child: Column(
                     children: [
-                      // 生物识别
+                      // 帮助中心
                       // ListTile(
+                      //   dense: true,
                       //   leading: Container(
                       //     width: 40,
                       //     height: 40,
                       //     decoration: BoxDecoration(
-                      //       color: const Color(0xFFE8F5E9),
+                      //       color: const Color(0xFFFFEBEE),
                       //       borderRadius: BorderRadius.circular(12),
                       //     ),
                       //     child: const Icon(
-                      //       Icons.fingerprint,
-                      //       color: Color(0xFF4CAF50),
+                      //       Icons.help,
+                      //       color: Color(0xFFF44336),
                       //     ),
                       //   ),
-                      //   title: const Text(
-                      //     "生物识别",
+                      //   title: Text(
+                      //     localizations.minePage_Option_HelpCenterLabel,
                       //     style: TextStyle(
                       //       fontSize: 16,
                       //       fontWeight: FontWeight.w500,
                       //     ),
                       //   ),
-                      //   subtitle: const Text(
-                      //     "指纹/面容解锁",
+                      //   subtitle: Text(
+                      //     localizations
+                      //         .minePage_Option_HelpCenterExplanationLabel,
                       //     style: TextStyle(fontSize: 12, color: Colors.grey),
                       //   ),
-                      //   trailing: Switch(
-                      //     value: isBiometricEnabled,
-                      //     onChanged: (value) {
-                      //       setState(() {
-                      //         isBiometricEnabled = value;
-                      //       });
-                      //     },
-                      //     activeColor: const Color(0xFF2D5BFF),
+                      //   trailing: const Icon(
+                      //     Icons.arrow_forward_ios,
+                      //     size: 18,
+                      //     color: Colors.grey,
                       //   ),
+                      //   onTap: () => _navigateToDetail('HelpPage'),
                       // ),
-                      // const Divider(height: 1, indent: 76),
-
-                      // 帮助中心
-                      ListTile(
-                        leading: Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFFFEBEE),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: const Icon(
-                            Icons.help,
-                            color: Color(0xFFF44336),
-                          ),
-                        ),
-                        title: Text(
-                          localizations.minePage_Option_HelpCenterLabel,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        subtitle: Text(
-                          localizations
-                              .minePage_Option_HelpCenterExplanationLabel,
-                          style: TextStyle(fontSize: 12, color: Colors.grey),
-                        ),
-                        trailing: const Icon(
-                          Icons.arrow_forward_ios,
-                          size: 18,
-                          color: Colors.grey,
-                        ),
-                        onTap: () => _navigateToDetail('HelpPage'),
-                      ),
-                      const Divider(height: 1, indent: 76),
 
                       // 关于我们
                       ListTile(
+                        dense: true,
                         leading: Container(
                           width: 40,
                           height: 40,

@@ -29,7 +29,7 @@ class TransactionItem extends StatelessWidget {
     return GestureDetector(
       onLongPress: () => _showActionMenu(context),
       child: Container(
-        color: Colors.white,
+        // color: Colors.white,
         child: Column(
           children: [
             // 内容区域
@@ -43,7 +43,7 @@ class TransactionItem extends StatelessWidget {
                     height: 40,
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: Colors.grey[100],
+                      // color: Colors.grey[100],
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: SvgIcon(model.category!.icon),
@@ -59,7 +59,7 @@ class TransactionItem extends StatelessWidget {
                           : model.category!.name,
                       style: const TextStyle(
                         fontSize: 20,
-                        color: Colors.black87,
+                        // color: Colors.black87,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -138,8 +138,8 @@ class TransactionItem extends StatelessWidget {
                   ),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey[200],
-                      foregroundColor: Colors.black87,
+                      // backgroundColor: Colors.grey[200],
+                      // foregroundColor: Colors.black87,
                       minimumSize: const Size.fromHeight(48),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),

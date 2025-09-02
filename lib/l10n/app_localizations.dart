@@ -149,6 +149,12 @@ abstract class AppLocalizations {
   /// **'Amount'**
   String get general_Amount;
 
+  /// No description provided for @general_NoRecords.
+  ///
+  /// In en, this message translates to:
+  /// **'No related records.'**
+  String get general_NoRecords;
+
   ///
   ///
   /// In en, this message translates to:
@@ -170,8 +176,8 @@ abstract class AppLocalizations {
   /// No description provided for @homePage_SummarizationCard_Summarization.
   ///
   /// In en, this message translates to:
-  /// **'Up to now, you\'ve cost {cost}{currencySign}, earned {earned}{currencySign}'**
-  String homePage_SummarizationCard_Summarization(int cost, int earned, String currencySign);
+  /// **'Up to now, you\'ve cost {currencySign}{cost}, earned {currencySign}{earned}'**
+  String homePage_SummarizationCard_Summarization(String cost, String earned, String currencySign);
 
   /// No description provided for @appDrawer_SettingsTextHint.
   ///
@@ -388,6 +394,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Help'**
   String get helpPage_AppBar_Title;
+
+  /// No description provided for @aboutPage_VersionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Version: {version} ({buildNumber})'**
+  String aboutPage_VersionLabel(String version, String buildNumber);
+
+  /// No description provided for @aboutPage_AppDescriptionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'A simple and lightweight bookkeeping app that offers a clean, hassle-free experience. Record your daily income and expenses to gain a clear view of your cash flow.'**
+  String get aboutPage_AppDescriptionLabel;
+
+  /// No description provided for @aboutPage_DeveloperTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Developer & Contributor'**
+  String get aboutPage_DeveloperTitle;
+
+  /// No description provided for @settingPage_Title_General.
+  ///
+  /// In en, this message translates to:
+  /// **'General'**
+  String get settingPage_Title_General;
+
+  /// No description provided for @settingPage_Config_ColorMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Color Mode'**
+  String get settingPage_Config_ColorMode;
+
+  /// No description provided for @settingPage_Config_Language.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get settingPage_Config_Language;
+
+  /// No description provided for @expenseStatisticsPage_TotalExpenceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Expense'**
+  String get expenseStatisticsPage_TotalExpenceLabel;
+
+  /// No description provided for @incomeStatisticsPage_TotalIncomeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Income'**
+  String get incomeStatisticsPage_TotalIncomeLabel;
+
+  /// No description provided for @minePage_JoinTimeTextHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Join on {timeString}'**
+  String minePage_JoinTimeTextHint(String timeString);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -21,6 +21,7 @@ class _HelpPageState extends State<HelpPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(localizations.helpPage_AppBar_Title)),
+      body: Text('HelpPage'),
     );
   }
 }

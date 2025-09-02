@@ -71,8 +71,36 @@ abstract class DataFormatter {
     return res;
   }
 
-  static formatDate(int date) {
+  static String formatDate(int date) {
     String dateString = date.toString();
     return '${dateString.substring(0, 4)}/${dateString.substring(4, 6)}/${dateString.substring(6, 8)}';
+  }
+
+  static Locale getLocaleFromLocaleString(String localeString) {
+    List<String> res = localeString.split('-');
+    if (res.length != 2) {
+      return Locale('en', 'US');
+    }
+    return Locale(res[0], res[1]);
+  }
+
+  static DateTime convertDateNumberToDateTime(int dateNumber) {
+    return DateTime(
+      dateNumber ~/ 10000,
+      dateNumber ~/ 100 % 100,
+      dateNumber % 100,
+    );
+  }
+
+  static DateTime convertDateStringToDateTime(String dateString) {
+    return DateTime(
+      int.parse(dateString.substring(0, 4)),
+      int.parse(dateString.substring(4, 6)),
+      int.parse(dateString.substring(6, 8)),
+    );
+  }
+
+  static String convertDateTimeToDateString(DateTime dateTime) {
+    return '${dateTime.year.toString()}/${dateTime.month.toString().padLeft(2, '0')}/${dateTime.day.toString().padLeft(2, '0')}}';
   }
 }

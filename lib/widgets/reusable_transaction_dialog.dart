@@ -1,7 +1,7 @@
 import 'package:bill/data/category_model.dart';
 import 'package:bill/data/transaction_model.dart';
 import 'package:bill/l10n/app_localizations.dart';
-import 'package:bill/manager/category_manager.dart';
+import 'package:bill/mediator/manager/category_manager.dart';
 import 'package:bill/widgets/amount_input_field.dart';
 import 'package:bill/widgets/category_selector.dart';
 import 'package:bill/widgets/record_type_segmented_button.dart';
@@ -16,6 +16,14 @@ class ReusableTransactionDialog extends StatefulWidget {
     this.isExpenseInitial = true,
     this.initialModel,
   });
+  // TODO: 导出前移除
+  // ReusableTransactionDialog.debug({
+  //   super.key,
+  //   this.isEditing = false,
+  //   this.isExpenseInitial = true,
+  //   this.initialModel,
+  //   this.canModifyDate = true,
+  // });
 
   @override
   State<ReusableTransactionDialog> createState() =>
@@ -23,6 +31,8 @@ class ReusableTransactionDialog extends StatefulWidget {
 
   bool isEditing = false;
   bool isExpenseInitial = true;
+  // TODO: 导出前移除
+  // bool canModifyDate = false;
   TransactionModel? initialModel;
 }
 
@@ -31,6 +41,8 @@ class _ReusableTransactionDialogState extends State<ReusableTransactionDialog>
   late bool _isExpense;
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _commentController = TextEditingController();
+  // TODO: 导出前移除
+  // final TextEditingController _dateController = TextEditingController();
 
   final List<CategoryModel> _expenseCategoryOptions = CategoryManager()
       .getCategories(true);
@@ -91,6 +103,17 @@ class _ReusableTransactionDialogState extends State<ReusableTransactionDialog>
                   border: const OutlineInputBorder(),
                 ),
               ),
+              // widget.canModifyDate
+              //     ? TextField(
+              //       controller: _dateController,
+              //       decoration: InputDecoration(
+              //         labelText:
+              //             localizations
+              //                 .insertRecordDialog_TextField_CommentTextHint,
+              //         border: const OutlineInputBorder(),
+              //       ),
+              //     )
+              //     : SizedBox.shrink(),
               AnimatedBuilder(
                 animation: _categoryHeightAnimation,
                 builder:
@@ -182,6 +205,9 @@ class _ReusableTransactionDialogState extends State<ReusableTransactionDialog>
       currentSelectedCategory =
           _isExpense ? _expenseCategoryOptions[0] : _incomeCategoryOptions[0];
     }
+    // if (widget.canModifyDate) {
+    //   _dateController.text = widget.initialModel!.date.toString();
+    // }
 
     // 初始化焦点节点
     _amountFocusNode = FocusNode();

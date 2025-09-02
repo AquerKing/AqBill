@@ -22,6 +22,8 @@
     "@general_Apply": {},
     "general_Amount": "Amount",
     "@general_Amount": {},
+    "general_NoRecords": "No related records.",
+    "@general_NoRecords": {},
     "bottomNavigatorBar_Home_Label": "Home",
     "@bottomNavigatorBar_Home_Label": {
         "description": ""
@@ -30,14 +32,14 @@
     "@bottomNavigatorBar_History_Label": {},
     "bottomNavigatorBar_Mine_Label": "Mine",
     "@bottomNavigatorBar_Mine_Label": {},
-    "homePage_SummarizationCard_Summarization": "Up to now, you've cost {cost}{currencySign}, earned {earned}{currencySign}",
+    "homePage_SummarizationCard_Summarization": "Up to now, you've cost {currencySign}{cost}, earned {currencySign}{earned}",
     "@homePage_SummarizationCard_Summarization": {
         "placeholders": {
             "cost": {
-                "type": "int"
+                "type": "String"
             },
             "earned": {
-                "type": "int"
+                "type": "String"
             },
             "currencySign": {
                 "type": "String"
@@ -121,5 +123,38 @@
     "aboutPage_AppBar_Title": "About",
     "@aboutPage_AppBar_Title": {},
     "helpPage_AppBar_Title": "Help",
-    "@helpPage_AppBar_Title": {}
+    "@helpPage_AppBar_Title": {},
+    "aboutPage_VersionLabel": "Version: {version} ({buildNumber})",
+    "@aboutPage_VersionLabel": {
+        "placeholders": {
+            "version": {
+                "type": "String"
+            },
+            "buildNumber": {
+                "type": "String"
+            }
+        }
+    },
+    "aboutPage_AppDescriptionLabel": "A simple and lightweight bookkeeping app that offers a clean, hassle-free experience. Record your daily income and expenses to gain a clear view of your cash flow.",
+    "@aboutPage_AppDescriptionLabel": {},
+    "aboutPage_DeveloperTitle": "Developer & Contributor",
+    "@aboutPage_DeveloperTitle": {},
+    "settingPage_Title_General": "General",
+    "@settingPage_Title_General": {},
+    "settingPage_Config_ColorMode": "Color Mode",
+    "@settingPage_Config_ColorMode": {},
+    "settingPage_Config_Language": "Language",
+    "@settingPage_Config_Language": {},
+    "expenseStatisticsPage_TotalExpenceLabel": "Total Expense",
+    "@expenseStatisticsPage_TotalExpenceLabel": {},
+    "incomeStatisticsPage_TotalIncomeLabel": "Total Income",
+    "@incomeStatisticsPage_TotalIncomeLabel": {},
+    "minePage_JoinTimeTextHint": "Join on {timeString}",
+    "@minePage_JoinTimeTextHint": {
+        "placeholders": {
+            "timeString": {
+                "type": "String"
+            }
+        }
+    }
 }

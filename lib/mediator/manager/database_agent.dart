@@ -81,6 +81,15 @@ class DatabaseAgent {
     );
   }
 
+  Future<void> deleteYearTransaction(int year) async {
+    Database db = await _instance.database;
+    await db.delete(
+      _transactionTableName,
+      where: 'date >= ? AND date <= ?',
+      whereArgs: [int.parse('${year}0101'), int.parse('${year}1231')],
+    );
+  }
+
   Future<void> modifyTransaction(int id, TransactionModel record) async {
     Database db = await _instance.database;
     await db.update(
@@ -129,4 +138,46 @@ class DatabaseAgent {
     }
     return records;
   }
+
+  Future<List<Map<String, dynamic>>> fetchAllRecords() async {
+    final Database db = await _instance.database;
+
+    return await db.query(_transactionDatabaseName);
+  }
+
+  /// 获取给定时间区间的所有记录
+  ///
+  /// `dateStart`: 起始日期，格式应当为八位数字字符串 \
+  /// `dateEnd`: 终止日期
+  // Future<List<Map<String, dynamic>>> fetchByPeriod(
+  //   String dateStart,
+  //   String dateEnd,
+  // ) async {
+  //   String year = date.substring(0, 4),
+  //       month = date.substring(4, 6),
+  //       day = date.substring(6, 8);
+
+  //   Database db = await _instance.database;
+  //   List<Map<String, dynamic>> records = [];
+  //   if (month != '00' && day != '00') {
+  //     records = await db.query(
+  //       _transactionTableName,
+  //       where: 'date = ?',
+  //       whereArgs: [int.parse(date)],
+  //     );
+  //   } else if (month == '00') {
+  //     records = await db.query(
+  //       _transactionTableName,
+  //       where: 'date >= ? AND date <= ?',
+  //       whereArgs: [int.parse('${year}0101'), int.parse('${year}1231')],
+  //     );
+  //   } else {
+  //     records = await db.query(
+  //       _transactionTableName,
+  //       where: 'date >= ? AND date <= ?',
+  //       whereArgs: [int.parse('$year${month}01'), int.parse('$year${month}31')],
+  //     );
+  //   }
+  //   return records;
+  // }
 }

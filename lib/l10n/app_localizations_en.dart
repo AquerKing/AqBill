@@ -36,6 +36,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get general_Amount => 'Amount';
 
   @override
+  String get general_NoRecords => 'No related records.';
+
+  @override
   String get bottomNavigatorBar_Home_Label => 'Home';
 
   @override
@@ -45,8 +48,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bottomNavigatorBar_Mine_Label => 'Mine';
 
   @override
-  String homePage_SummarizationCard_Summarization(int cost, int earned, String currencySign) {
-    return 'Up to now, you\'ve cost $cost$currencySign, earned $earned$currencySign';
+  String homePage_SummarizationCard_Summarization(String cost, String earned, String currencySign) {
+    return 'Up to now, you\'ve cost $currencySign$cost, earned $currencySign$earned';
   }
 
   @override
@@ -158,4 +161,35 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpPage_AppBar_Title => 'Help';
+
+  @override
+  String aboutPage_VersionLabel(String version, String buildNumber) {
+    return 'Version: $version ($buildNumber)';
+  }
+
+  @override
+  String get aboutPage_AppDescriptionLabel => 'A simple and lightweight bookkeeping app that offers a clean, hassle-free experience. Record your daily income and expenses to gain a clear view of your cash flow.';
+
+  @override
+  String get aboutPage_DeveloperTitle => 'Developer & Contributor';
+
+  @override
+  String get settingPage_Title_General => 'General';
+
+  @override
+  String get settingPage_Config_ColorMode => 'Color Mode';
+
+  @override
+  String get settingPage_Config_Language => 'Language';
+
+  @override
+  String get expenseStatisticsPage_TotalExpenceLabel => 'Total Expense';
+
+  @override
+  String get incomeStatisticsPage_TotalIncomeLabel => 'Total Income';
+
+  @override
+  String minePage_JoinTimeTextHint(String timeString) {
+    return 'Join on $timeString';
+  }
 }

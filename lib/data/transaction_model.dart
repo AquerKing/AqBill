@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:bill/data/category_model.dart';
 import 'package:bill/extension/date_getter.dart';
 import 'package:bill/extension/id_generator.dart';
-import 'package:bill/manager/category_manager.dart';
-import 'package:bill/manager/transcation_repository.dart';
+import 'package:bill/mediator/manager/category_manager.dart';
+import 'package:bill/mediator/manager/transaction_repository.dart';
 
 /// Transaction 数据模型
 class TransactionModel {

@@ -1,4 +1,5 @@
 import 'package:bill/data/category_model.dart';
+import 'package:bill/mediator/provider/theme_provider.dart';
 import 'package:bill/resources/svg_icon.dart';
 import 'package:flutter/material.dart';
 
@@ -42,7 +43,10 @@ class _CategorySelectorState extends State<CategorySelector> {
     return Container(
       constraints: BoxConstraints(maxHeight: widget.maxHeight ?? 200),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey[200]!),
+        border: Border.all(
+          // color: Colors.grey[200]!,
+          width: 1,
+        ),
         borderRadius: BorderRadius.circular(8),
       ),
       child: SingleChildScrollView(
@@ -68,7 +72,16 @@ class _CategorySelectorState extends State<CategorySelector> {
                     ),
                     child: Row(
                       children: [
-                        SvgIcon(category.icon),
+                        Container(
+                          padding: EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            color:
+                                ThemeProvider()
+                                    .theme['BoxDecoration.Default.BackgroundColor']!,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: SvgIcon(category.icon),
+                        ),
                         const SizedBox(width: 12),
                         // 文字区域
                         Expanded(
@@ -84,10 +97,10 @@ class _CategorySelectorState extends State<CategorySelector> {
                                       isSelected
                                           ? FontWeight.w500
                                           : FontWeight.normal,
-                                  color:
-                                      isSelected
-                                          ? Colors.black87
-                                          : Colors.black54,
+                                  // color:
+                                  //     isSelected
+                                  //         ? Colors.black87
+                                  //         : Colors.black54,
                                 ),
                               ),
                               if (category.description.isNotEmpty)

@@ -1,7 +1,8 @@
+import 'package:bill/l10n/app_localizations.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:bill/data/transaction_model.dart';
-import 'package:bill/manager/category_manager.dart';
+import 'package:bill/mediator/manager/category_manager.dart';
 
 class TransactionPieChart extends StatelessWidget {
   final List<TransactionModel> transactions;
@@ -52,6 +53,23 @@ class TransactionPieChart extends StatelessWidget {
     final sections = <PieChartSectionData>[];
     final categories = CategoryManager().getCategories(isExpense);
 
+    if (categoryTotals.isEmpty) {
+      sections.add(
+        PieChartSectionData(
+          value: 1,
+          color: Colors.grey,
+          radius: 50,
+          title: '0%',
+          titleStyle: TextStyle(
+            fontSize: 12, // 占比小的文字稍小
+            fontWeight: FontWeight.bold,
+            // color: Colors.white,
+          ),
+        ),
+      );
+      return sections;
+    }
+
     int colorIndex = 0;
     for (final entry in categoryTotals.entries) {
       final categoryId = entry.key;
@@ -74,12 +92,13 @@ class TransactionPieChart extends StatelessWidget {
         PieChartSectionData(
           value: percentage,
           color: _colors[colorIndex % _colors.length],
-          radius: percentage > 10 ? 60 : 50, // 占比大的区块稍大一些
+          // radius: percentage > 10 ? 60 : 50, // 占比大的区块稍大一些
+          radius: 60, // 占比大的区块稍大一些
           title: '${percentage.toStringAsFixed(1)}%',
           titleStyle: TextStyle(
             fontSize: percentage > 5 ? 12 : 10, // 占比小的文字稍小
             fontWeight: FontWeight.bold,
-            color: Colors.white,
+            // color: Colors.white,
           ),
         ),
       );
@@ -91,7 +110,10 @@ class TransactionPieChart extends StatelessWidget {
   }
 
   // 构建图例
-  Widget _buildLegends(Map<int, double> categoryTotals) {
+  Widget _buildLegends(
+    Map<int, double> categoryTotals,
+    AppLocalizations localizations,
+  ) {
     final categories = CategoryManager().getCategories(isExpense);
     final total = categoryTotals.values.fold(0.0, (sum, value) => sum + value);
     final legends = <Widget>[];
@@ -131,7 +153,7 @@ class TransactionPieChart extends StatelessWidget {
               Expanded(
                 child: Text(
                   category.name,
-                  style: const TextStyle(fontSize: 12, color: Colors.black87),
+                  // style: const TextStyle(fontSize: 12, color: Colors.black87),
                 ),
               ),
               // 占比和金额
@@ -147,28 +169,28 @@ class TransactionPieChart extends StatelessWidget {
       colorIndex++;
     }
 
-    // 如果没有数据，显示提示
-    if (legends.isEmpty) {
-      return const Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Text(
-          '没有相关交易数据',
-          style: TextStyle(color: Colors.grey, fontSize: 14),
-        ),
-      );
-    }
+    // // 如果没有数据，显示提示
+    // if (legends.isEmpty) {
+    //   return const Padding(
+    //     padding: EdgeInsets.all(16.0),
+    //     child: Text(
+    //       '没有相关交易数据',
+    //       style: TextStyle(color: Colors.grey, fontSize: 14),
+    //     ),
+    //   );
+    // }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          '${isExpense ? '支出' : '收入'}分类占比',
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            // margin: EdgeInsets.only(bottom: 8),
-          ),
-        ),
+        // Text(
+        //   '${isExpense ? '支出' : '收入'}分类占比',
+        //   style: const TextStyle(
+        //     fontSize: 16,
+        //     fontWeight: FontWeight.bold,
+        //     // margin: EdgeInsets.only(bottom: 8),
+        //   ),
+        // ),
         ...legends,
       ],
     );
@@ -177,6 +199,7 @@ class TransactionPieChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final categoryTotals = _calculateCategoryTotals();
+    final AppLocalizations localizations = AppLocalizations.of(context)!;
 
     return Column(
       children: [
@@ -208,7 +231,18 @@ class TransactionPieChart extends StatelessWidget {
                 horizontal: 16.0,
                 vertical: 8.0,
               ),
-              child: _buildLegends(categoryTotals),
+              child:
+                  categoryTotals.isEmpty
+                      ? SizedBox(
+                        width: double.infinity,
+                        child: Center(
+                          child: Text(
+                            localizations.general_NoRecords,
+                            style: TextStyle(color: Colors.grey, fontSize: 14),
+                          ),
+                        ),
+                      )
+                      : _buildLegends(categoryTotals, localizations),
             ),
           ),
         ),
