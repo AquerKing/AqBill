@@ -95,6 +95,7 @@ class _AboutPageState extends State<AboutPage> {
                 Text(
                   localizations.aboutPage_VersionLabel(
                     AppInfo.version,
+                    AppInfo.channel,
                     AppInfo.buildNumber,
                   ),
                   style: const TextStyle(color: Colors.grey, fontSize: 16),

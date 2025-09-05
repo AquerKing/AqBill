@@ -124,10 +124,13 @@
     "@aboutPage_AppBar_Title": {},
     "helpPage_AppBar_Title": "Help",
     "@helpPage_AppBar_Title": {},
-    "aboutPage_VersionLabel": "Version: {version} ({buildNumber})",
+    "aboutPage_VersionLabel": "Version: {version}-{channel} ({buildNumber})",
     "@aboutPage_VersionLabel": {
         "placeholders": {
             "version": {
+                "type": "String"
+            },
+            "channel": {
                 "type": "String"
             },
             "buildNumber": {

@@ -171,8 +171,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get helpPage_AppBar_Title => 'Help';
 
   @override
-  String aboutPage_VersionLabel(String version, String buildNumber) {
-    return 'Version: $version ($buildNumber)';
+  String aboutPage_VersionLabel(
+    String version,
+    String channel,
+    String buildNumber,
+  ) {
+    return 'Version: $version-$channel ($buildNumber)';
   }
 
   @override

@@ -167,8 +167,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get helpPage_AppBar_Title => '帮助';
 
   @override
-  String aboutPage_VersionLabel(String version, String buildNumber) {
-    return '版本: $version ($buildNumber)';
+  String aboutPage_VersionLabel(
+    String version,
+    String channel,
+    String buildNumber,
+  ) {
+    return '版本: $version-$channel ($buildNumber)';
   }
 
   @override
