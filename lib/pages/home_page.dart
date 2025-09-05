@@ -73,6 +73,7 @@ class _HomePageState extends State<HomePage> {
       DatabaseAgent().insertTransaction(transaction);
       GlobalDataModel().insertRecord(transaction);
       TransactionRepository().updateTodaysRecords();
+      TransactionRepository().updatePeridicRecords();
     }
   }
 

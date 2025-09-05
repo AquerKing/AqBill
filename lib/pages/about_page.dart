@@ -157,21 +157,18 @@ class _AboutPageState extends State<AboutPage> {
             IconButton(
               icon: const Icon(Icons.language),
               onPressed: () => _launchUrl(AppInfo.website),
-              tooltip: "访问网站",
             ),
 
             // 邮件链接
             IconButton(
               icon: const Icon(Icons.email),
               onPressed: () => _launchUrl("mailto:${AppInfo.email}"),
-              tooltip: "发送邮件",
             ),
 
             // GitHub链接
             IconButton(
               icon: const Icon(Icons.code),
               onPressed: () => _launchUrl("https://github.com"),
-              tooltip: "GitHub",
             ),
           ],
         ),

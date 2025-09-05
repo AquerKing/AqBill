@@ -1,7 +1,7 @@
 class DateGetter {
   DateGetter._internal();
 
-  static int getTodaysDateNumber() {
+  static int getTodayDateNumber() {
     DateTime dateTime = DateTime.now();
     return dateTime.year * 10000 + dateTime.month * 100 + dateTime.day;
   }

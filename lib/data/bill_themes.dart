@@ -89,7 +89,7 @@ final ThemeData lightTheme = ThemeData(
   ),
 
   // 卡片主题（纯白基底 + 青绿色边框）
-  cardTheme: CardTheme(
+  cardTheme: CardThemeData(
     color: Colors.white,
     elevation: 2,
     margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -205,7 +205,7 @@ final ThemeData darkTheme = ThemeData(
   ),
 
   // 卡片主题（深灰基底 + 青绿色边框）
-  cardTheme: CardTheme(
+  cardTheme: CardThemeData(
     color: Colors.grey[850]!, // 稍浅的深灰，与页面背景区分
     elevation: 2,
     margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

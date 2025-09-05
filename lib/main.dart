@@ -1,13 +1,12 @@
 import 'dart:math';
 
-import 'package:bill/data/bill_themes.dart';
+// import 'package:bill/data/bill_themes.dart';
 import 'package:bill/data/global_data_model.dart';
 import 'package:bill/data/transaction_model.dart';
-import 'package:bill/extension/date_getter.dart';
+// import 'package:bill/extension/date_getter.dart';
 import 'package:bill/extension/id_generator.dart';
 import 'package:bill/l10n/app_localizations.dart';
-import 'package:bill/mediator/manager/category_manager.dart';
-import 'package:bill/mediator/manager/user_data_manager.dart';
+// import 'package:bill/mediator/manager/category_manager.dart';
 import 'package:bill/mediator/manager/database_agent.dart';
 import 'package:bill/mediator/provider/locale_provider.dart';
 import 'package:bill/mediator/provider/theme_provider.dart';
@@ -16,39 +15,85 @@ import 'package:bill/pages/about_page.dart';
 import 'package:bill/pages/mine_page.dart';
 import 'package:bill/pages/history_page.dart';
 import 'package:bill/pages/settings_page.dart';
-import 'package:bill/widgets/reusable_transaction_dialog.dart';
+// import 'package:bill/widgets/reusable_transaction_dialog.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bill/pages/home_page.dart';
-import 'package:flutter_logger_plus/flutter_logger_plus.dart';
+// import 'package:flutter_logger_plus/flutter_logger_plus.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // 读取数据
-  UserDataManager().checkBackupFolder;
-  GlobalDataModel().initLifecycleListener();
-  await GlobalDataModel().loadFromFiles();
-  UserDataManager().checkLastRunTime();
+  // UserDataManager().checkBackupFolder;
+  // GlobalDataModel().initLifecycleListener();
+  // await GlobalDataModel().loadFromFiles();
+  // UserDataManager().checkLastRunTime();
+  // LocaleProvider().changeLocale(
+  //   GlobalDataModel().get('UserConfig', 'app.lang'),
+  // );
+
+  // ThemeProvider().updateFromConfig();
+  // await TransactionRepository().updateTodaysRecords();
+
+  await GlobalDataModel().readFile('UserConfig');
+  ThemeProvider().updateFromConfig();
+
+  runApp(
+    FutureBuilder(
+      future: _loadAppData(),
+      builder: (context, asyncSnapshot) {
+        if (asyncSnapshot.connectionState == ConnectionState.done) {
+          return MultiProvider(
+            providers: [
+              ChangeNotifierProvider.value(value: GlobalDataModel()),
+              ChangeNotifierProvider.value(value: TransactionRepository()),
+              ChangeNotifierProvider.value(value: ThemeProvider()),
+              ChangeNotifierProvider.value(value: LocaleProvider()),
+            ],
+            child: const MyApp(),
+          );
+        } else {
+          return MaterialApp(
+            theme: ThemeProvider().theme['Material.ThemeData'],
+            home: Scaffold(
+              body: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(
+                      width: 200, // 限制进度条宽度
+                      child: LinearProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          // Color(0xFF2196F3),
+                          Colors.teal,
+                        ),
+                        // backgroundColor: Color(0xFFEEEEEE), // 背景色
+                        minHeight: 6, // 进度条高度
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }
+      },
+    ),
+  );
+}
+
+Future<void> _loadAppData() async {
+  await Future.wait([
+    GlobalDataModel().readFile('UserData'),
+    GlobalDataModel().readFile('AppData'),
+    TransactionRepository().updateTodaysRecords(),
+  ]);
   LocaleProvider().changeLocale(
     GlobalDataModel().get('UserConfig', 'app.lang'),
   );
-
-  ThemeProvider().updateFromConfig();
-  await TransactionRepository().updateTodaysRecords();
-
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider.value(value: GlobalDataModel()),
-        ChangeNotifierProvider.value(value: TransactionRepository()),
-        ChangeNotifierProvider.value(value: ThemeProvider()),
-        ChangeNotifierProvider.value(value: LocaleProvider()),
-      ],
-      child: const MyApp(),
-    ),
-  );
+  GlobalDataModel().checkLastRunTime();
 }
 
 class MyApp extends StatelessWidget {
@@ -145,6 +190,13 @@ class _AppHomeState extends State<AppHome> with SingleTickerProviderStateMixin {
             title: Text('Reset Today\'s Data [DEBUG_ONLY]'),
             onTap: () {
               GlobalDataModel().clearTodaysTransactions();
+              Navigator.pop(context); // 关闭抽屉
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.timelapse, color: Colors.red),
+            title: Text('Force Set Next Month [DEBUG_ONLY]'),
+            onTap: () {
               Navigator.pop(context); // 关闭抽屉
             },
           ),

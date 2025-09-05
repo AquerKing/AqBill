@@ -88,6 +88,7 @@ class GlobalDataModel extends ChangeNotifier {
   void updateRecord(TransactionModel model, TransactionModel oldModel) {
     int amount = model.amount;
     int oldAmount = oldModel.amount;
+
     if (model.isExpense && oldModel.isExpense) {
       _globalJson['UserData']!['cost.current'] += amount - oldAmount;
     } else if (model.isExpense) {
@@ -207,7 +208,6 @@ class GlobalDataModel extends ChangeNotifier {
     File targetFile = File(
       '${directory.path}/${_dataFileManifest['UserData']}',
     );
-    String content = json.encode(_globalJson['UserData']);
     targetFile.writeAsString(json.encode(_globalJson['UserData']), flush: true);
 
     // 写入 UserConfig
@@ -218,6 +218,26 @@ class GlobalDataModel extends ChangeNotifier {
     );
   }
 
+  Future<void> _ensureFileExists(String alias) async {
+    if (!_dataFileManifest.containsKey(alias)) {
+      return;
+    }
+
+    final Directory directory = await getApplicationDocumentsDirectory();
+    if (!await directory.exists()) {
+      directory.create(recursive: true);
+    }
+
+    final File file = File('${directory.path}/${_dataFileManifest[alias]}');
+    if (!await file.exists()) {
+      if (!await file.parent.exists()) {
+        await file.parent.create(recursive: true);
+      }
+    }
+
+    await file.create();
+  }
+
   /// 将指定配置项写入对应文件
   Future<void> saveFile(String alias) async {
     if (!_dataFileManifest.containsKey(alias)) {
@@ -225,10 +245,19 @@ class GlobalDataModel extends ChangeNotifier {
       return;
     }
 
+    await _ensureFileExists(alias);
+
     final directory = await getApplicationDocumentsDirectory();
 
     File targetFile = File('${directory.path}/${_dataFileManifest[alias]}');
     targetFile.writeAsString(json.encode(_globalJson[alias]), flush: true);
+  }
+
+  void checkLastRunTime() {
+    if (DateGetter.getTodaysYMNumber() !=
+        _globalJson['AppData']!['app.last_run']) {
+      resetMonthData();
+    }
   }
 
   /// 从映射文件中读取指定配置项
@@ -238,13 +267,19 @@ class GlobalDataModel extends ChangeNotifier {
       return;
     }
 
-    final directory = await getApplicationDocumentsDirectory();
+    await _ensureFileExists(alias);
 
+    final directory = await getApplicationDocumentsDirectory();
     File targetFile = File('${directory.path}/${_dataFileManifest[alias]}');
     String rawContent = await targetFile.readAsString();
+    if (rawContent.isEmpty) {
+      return;
+    }
     Map<String, dynamic> jsonMap = json.decode(rawContent);
     _globalJson[alias]!.addAll(jsonMap);
+  }
 
+  void notifyListenersManually() {
     notifyListeners();
   }
 

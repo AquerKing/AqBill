@@ -4,7 +4,6 @@ import 'package:bill/data/category_model.dart';
 import 'package:bill/extension/date_getter.dart';
 import 'package:bill/extension/id_generator.dart';
 import 'package:bill/mediator/manager/category_manager.dart';
-import 'package:bill/mediator/manager/transaction_repository.dart';
 
 /// Transaction 数据模型
 class TransactionModel {
@@ -32,7 +31,7 @@ class TransactionModel {
   int amount = 0;
   CategoryModel? category;
   String comment = '';
-  int date = DateGetter.getTodaysDateNumber();
+  int date = DateGetter.getTodayDateNumber();
 
   bool get isExpense {
     return category!.id >= 10000 && category!.id < 20000;

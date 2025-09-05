@@ -1,4 +1,4 @@
-package com.example.bill
+package app.aquer.bill
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -45,7 +45,7 @@ class _HistoryPageState extends State<HistoryPage> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     // 初始化选中日期
-    _selectedDateTime = DateGetter.getTodaysDateNumber();
+    _selectedDateTime = DateGetter.getTodayDateNumber();
     TransactionRepository().updateByPeriod(_selectedDateTime);
     _scrollController.addListener(_handleScroll);
     _loadTransactions(); // 初始加载数据
@@ -160,10 +160,9 @@ class _HistoryPageState extends State<HistoryPage> with WidgetsBindingObserver {
             // height: _isCollapsed ? _collapsedHeight : _expandedHeight,
             curve: Curves.easeInOut,
             decoration: BoxDecoration(
-              // color: Colors.white,
               border: Border(
                 bottom: BorderSide(
-                  color: ThemeProvider().theme['Border.Default.Color']!,
+                  color: ThemeProvider().theme['Border.Default.Color'],
                   width: 1,
                 ),
               ),
@@ -212,17 +211,17 @@ class _HistoryPageState extends State<HistoryPage> with WidgetsBindingObserver {
                     ? _buildLoadingIndicator() // 加载中显示动画
                     : TransactionRepository().periodicRecords.isEmpty
                     ? _buildEmptyState() // 空状态
-                    : Consumer<TransactionRepository>(
-                      builder: (context, repository, child) {
+                    : Consumer2<TransactionRepository, GlobalDataModel>(
+                      builder: (context, repository, globalDataModel, child) {
                         return SelectableTransactionList(
-                          // // 正常显示列表
+                          // 正常显示列表
                           scrollController: _scrollController,
                           transactions: repository.periodicRecords,
                           reservedSpaceHeight:
                               MediaQuery.of(context).size.height * 0.2,
                           onDeleteSelected: (selected) {
                             for (TransactionModel model in selected) {
-                              GlobalDataModel().revertRecord(model);
+                              globalDataModel.revertRecord(model);
                               DatabaseAgent().deleteTransaction(model);
                             }
                             repository.updateTodaysRecords();

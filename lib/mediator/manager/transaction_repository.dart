@@ -18,6 +18,7 @@ class TransactionRepository extends ChangeNotifier {
   List<TransactionModel> _todaysRecords = [];
 
   List<TransactionModel> periodicRecords = [];
+  int periodNumber = DateGetter.getTodayDateNumber();
 
   int get count {
     return _todaysRecords.length;
@@ -38,6 +39,15 @@ class TransactionRepository extends ChangeNotifier {
         }).toList();
 
     notifyListeners();
+  }
+
+  Future<void> updatePeridicRecords() async {
+    if (DateGetter.getTodayDateNumber() == periodNumber) {
+      periodicRecords = _todaysRecords;
+    }
+    else {
+      periodicRecords = await fetchByPeriod(periodNumber);
+    }
   }
 
   Future<List<TransactionModel>> fetchTodaysRecords() async {

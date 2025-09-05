@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:archive/archive_io.dart';
 import 'package:bill/data/global_data_model.dart';
-import 'package:bill/data/transaction_model.dart';
+// import 'package:bill/data/transaction_model.dart';
 import 'package:bill/extension/date_getter.dart';
 import 'package:bill/extension/zip_utils.dart';
 import 'package:bill/mediator/manager/database_agent.dart';
@@ -57,7 +57,7 @@ class UserDataManager {
 
     final Map<String, dynamic> archiveMetadata = {
       'year': year,
-      'create_time': DateGetter.getTodaysDateNumber(),
+      'create_time': DateGetter.getTodayDateNumber(),
       'records_count': records.length,
     };
 
@@ -87,10 +87,10 @@ class UserDataManager {
   Future<void> backupUserData() async {
     final Directory applicationDataDirectory =
         await getApplicationDocumentsDirectory();
-    final Directory archiveDirectory = Directory(
-      '${applicationDataDirectory.path}/$archiveStoragePath',
-    );
-    final int dateNumber = DateGetter.getTodaysDateNumber();
+    // final Directory archiveDirectory = Directory(
+    //   '${applicationDataDirectory.path}/$archiveStoragePath',
+    // );
+    final int dateNumber = DateGetter.getTodayDateNumber();
     final File backupArchiveFile = File(
       '${applicationDataDirectory.path}/$backupStoragePath/backup_$dateNumber.zip',
     );

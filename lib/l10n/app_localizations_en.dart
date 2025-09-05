@@ -48,7 +48,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bottomNavigatorBar_Mine_Label => 'Mine';
 
   @override
-  String homePage_SummarizationCard_Summarization(String cost, String earned, String currencySign) {
+  String homePage_SummarizationCard_Summarization(
+    String cost,
+    String earned,
+    String currencySign,
+  ) {
     return 'Up to now, you\'ve cost $currencySign$cost, earned $currencySign$earned';
   }
 
@@ -71,7 +75,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get modifyRecordDialog_Title => 'Modify Record';
 
   @override
-  String get historyPage_StatisticsButton_ExpenseTextHint => 'Expense Statistics';
+  String get historyPage_StatisticsButton_ExpenseTextHint =>
+      'Expense Statistics';
 
   @override
   String get historyPage_StatisticsButton_IncomeTextHint => 'Income Statistics';
@@ -106,7 +111,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get minePage_Option_BudgetLabel => 'Budget';
 
   @override
-  String get minePage_Option_BudgetExplanationLabel => 'Set your monthly budget';
+  String get minePage_Option_BudgetExplanationLabel =>
+      'Set your monthly budget';
 
   @override
   String get minePage_Option_AlarmLabel => 'Alarm';
@@ -118,13 +124,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get minePage_Option_PrivacyAndBackupLabel => 'Privacy & Backup';
 
   @override
-  String get minePage_Option_PrivacyAndBackupExplanationLabel => 'Protect your data';
+  String get minePage_Option_PrivacyAndBackupExplanationLabel =>
+      'Protect your data';
 
   @override
   String get minePage_Option_HelpCenterLabel => 'Help';
 
   @override
-  String get minePage_Option_HelpCenterExplanationLabel => 'Find some solutions here';
+  String get minePage_Option_HelpCenterExplanationLabel =>
+      'Find some solutions here';
 
   @override
   String get minePage_Option_AboutLabel => 'About';
@@ -168,7 +176,8 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get aboutPage_AppDescriptionLabel => 'A simple and lightweight bookkeeping app that offers a clean, hassle-free experience. Record your daily income and expenses to gain a clear view of your cash flow.';
+  String get aboutPage_AppDescriptionLabel =>
+      'A simple and lightweight bookkeeping app that offers a clean, hassle-free experience. Record your daily income and expenses to gain a clear view of your cash flow.';
 
   @override
   String get aboutPage_DeveloperTitle => 'Developer & Contributor';

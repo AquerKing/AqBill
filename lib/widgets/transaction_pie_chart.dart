@@ -16,18 +16,18 @@ class TransactionPieChart extends StatelessWidget {
 
   // 生成鲜明可辨的颜色列表
   final List<Color> _colors = const [
-    Colors.red,
-    Colors.green,
-    Colors.blue,
-    Colors.yellow,
-    Colors.purple,
-    Colors.orange,
-    Colors.pink,
-    Colors.teal,
-    Colors.indigo,
-    Colors.cyan,
-    Colors.lime,
-    Colors.amber,
+    Colors.redAccent,
+    Colors.greenAccent,
+    Colors.blueAccent,
+    Colors.yellowAccent,
+    Colors.purpleAccent,
+    Colors.orangeAccent,
+    Colors.pinkAccent,
+    Colors.tealAccent,
+    Colors.indigoAccent,
+    Colors.cyanAccent,
+    Colors.limeAccent,
+    Colors.amberAccent,
   ];
 
   // 统计各分类的金额总和
@@ -98,7 +98,7 @@ class TransactionPieChart extends StatelessWidget {
           titleStyle: TextStyle(
             fontSize: percentage > 5 ? 12 : 10, // 占比小的文字稍小
             fontWeight: FontWeight.bold,
-            // color: Colors.white,
+            color: Colors.black54,
           ),
         ),
       );
@@ -159,7 +159,10 @@ class TransactionPieChart extends StatelessWidget {
               // 占比和金额
               Text(
                 '${percentage.toStringAsFixed(1)}%',
-                style: const TextStyle(fontSize: 12, color: Colors.grey),
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey,
+                ),
               ),
             ],
           ),

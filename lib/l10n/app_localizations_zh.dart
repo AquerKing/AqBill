@@ -48,7 +48,11 @@ class AppLocalizationsZh extends AppLocalizations {
   String get bottomNavigatorBar_Mine_Label => '我的';
 
   @override
-  String homePage_SummarizationCard_Summarization(String cost, String earned, String currencySign) {
+  String homePage_SummarizationCard_Summarization(
+    String cost,
+    String earned,
+    String currencySign,
+  ) {
     return '截至目前，你已经花费了$currencySign$cost，赚了$currencySign$earned';
   }
 
