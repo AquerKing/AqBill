@@ -50,6 +50,11 @@ class TransactionRepository extends ChangeNotifier {
     }
   }
 
+  Future<void> updateRecords() async {
+    await updateTodaysRecords();
+    updatePeridicRecords();
+  }
+
   Future<List<TransactionModel>> fetchTodaysRecords() async {
     List<Map<String, dynamic>> rawRecords = await fetchByDate(
       DateGetter.getTodaysDateString(),

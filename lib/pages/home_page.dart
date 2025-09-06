@@ -72,6 +72,7 @@ class _HomePageState extends State<HomePage> {
     if (transaction != null) {
       DatabaseAgent().insertTransaction(transaction);
       GlobalDataModel().insertRecord(transaction);
+      GlobalDataModel().saveFile('UserData');
       TransactionRepository().updateTodaysRecords();
       TransactionRepository().updatePeridicRecords();
     }
@@ -388,14 +389,19 @@ class _HomePageState extends State<HomePage> {
                             model.id,
                             transaction,
                           );
-                          repository.updateTodaysRecords();
+                          // repository.updateTodaysRecords();
+                          repository.updateRecords();
                           globalData.updateRecord(transaction, model);
+                          globalData.saveFile('UserData');
                         }
                       },
                       onDelete: (model) {
                         DatabaseAgent().deleteTransaction(model);
-                        repository.updateTodaysRecords();
+                        // repository.updateTodaysRecords();
+                        // repository.updatePeridicRecords();
+                        repository.updateRecords();
                         globalData.revertRecord(model);
+                        globalData.saveFile('UserData');
                       },
                     );
                   },

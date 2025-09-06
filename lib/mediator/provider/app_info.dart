@@ -2,7 +2,7 @@ class AppInfo {
   AppInfo._internal();
 
   static String applicationName = 'AqBill';
-  static String buildNumber = 'build-2';
+  static String buildNumber = 'build-1';
   static String version = '0.1.0';
   static String channel = 'dev';
   static String developer = 'AquerKing';

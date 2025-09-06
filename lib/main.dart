@@ -94,6 +94,7 @@ Future<void> _loadAppData() async {
     GlobalDataModel().get('UserConfig', 'app.lang'),
   );
   GlobalDataModel().checkLastRunTime();
+  GlobalDataModel().notifyListenersManually();
 }
 
 class MyApp extends StatelessWidget {

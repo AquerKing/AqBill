@@ -254,9 +254,11 @@ class GlobalDataModel extends ChangeNotifier {
   }
 
   void checkLastRunTime() {
-    if (DateGetter.getTodaysYMNumber() !=
-        _globalJson['AppData']!['app.last_run']) {
+    final int todayYMNumber = DateGetter.getTodaysYMNumber();
+    if (todayYMNumber != _globalJson['AppData']!['app.last_run']) {
       resetMonthData();
+      _globalJson['AppData']!['app.last_run'] = todayYMNumber;
+      GlobalDataModel().saveFile('AppData');
     }
   }
 
