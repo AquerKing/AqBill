@@ -70,11 +70,9 @@ class _HomePageState extends State<HomePage> {
     );
 
     if (transaction != null) {
-      DatabaseAgent().insertTransaction(transaction);
+      await DatabaseAgent().insertTransaction(transaction);
+      TransactionRepository().updateRecords();
       GlobalDataModel().insertRecord(transaction);
-      GlobalDataModel().saveFile('UserData');
-      TransactionRepository().updateTodaysRecords();
-      TransactionRepository().updatePeridicRecords();
     }
   }
 
@@ -390,9 +388,9 @@ class _HomePageState extends State<HomePage> {
                             transaction,
                           );
                           // repository.updateTodaysRecords();
-                          repository.updateRecords();
                           globalData.updateRecord(transaction, model);
                           globalData.saveFile('UserData');
+                          repository.updateRecords();
                         }
                       },
                       onDelete: (model) {

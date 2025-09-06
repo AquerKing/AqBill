@@ -88,7 +88,7 @@ Future<void> _loadAppData() async {
   await Future.wait([
     GlobalDataModel().readFile('UserData'),
     GlobalDataModel().readFile('AppData'),
-    TransactionRepository().updateTodaysRecords(),
+    TransactionRepository().updateRecords(),
   ]);
   LocaleProvider().changeLocale(
     GlobalDataModel().get('UserConfig', 'app.lang'),

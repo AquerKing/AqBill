@@ -38,17 +38,15 @@ class _HistoryPageState extends State<HistoryPage> with WidgetsBindingObserver {
     super.didChangeDependencies();
     localizations = AppLocalizations.of(context)!;
     _scrollThreshold = MediaQuery.of(context).size.height * 0.15;
-    TransactionRepository().updateByPeriod(_selectedDateTime);
   }
 
   @override
   void initState() {
     super.initState();
     // 初始化选中日期
-    _selectedDateTime = DateGetter.getTodayDateNumber();
-    TransactionRepository().updateByPeriod(_selectedDateTime);
+    _selectedDateTime = TransactionRepository().periodNumber;
+    _loadTransactions();
     _scrollController.addListener(_handleScroll);
-    _loadTransactions(); // 初始加载数据
   }
 
   @override
@@ -61,7 +59,8 @@ class _HistoryPageState extends State<HistoryPage> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      TransactionRepository().updateByPeriod(_selectedDateTime);
+      // TransactionRepository().updateByPeriod(_selectedDateTime);
+      _loadTransactions();
     }
   }
 
@@ -103,9 +102,9 @@ class _HistoryPageState extends State<HistoryPage> with WidgetsBindingObserver {
       setState(() => _isLoading = false);
       // 可以添加错误提示
       if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('加载失败: ${e.toString()}')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to Load: ${e.toString()}')),
+        );
       }
     }
   }
@@ -209,26 +208,26 @@ class _HistoryPageState extends State<HistoryPage> with WidgetsBindingObserver {
             child:
                 _isLoading
                     ? _buildLoadingIndicator() // 加载中显示动画
-                    : TransactionRepository().periodicRecords.isEmpty
-                    ? _buildEmptyState() // 空状态
                     : Consumer2<TransactionRepository, GlobalDataModel>(
                       builder: (context, repository, globalDataModel, child) {
-                        return SelectableTransactionList(
-                          // 正常显示列表
-                          scrollController: _scrollController,
-                          transactions: repository.periodicRecords,
-                          reservedSpaceHeight:
-                              MediaQuery.of(context).size.height * 0.2,
-                          onDeleteSelected: (selected) {
-                            for (TransactionModel model in selected) {
-                              globalDataModel.revertRecord(model);
-                              DatabaseAgent().deleteTransaction(model);
-                            }
-                            repository.updateTodaysRecords();
-                            _loadTransactions();
-                            _isCollapsed = false;
-                          },
-                        );
+                        return TransactionRepository().periodicRecords.isEmpty
+                            ? _buildEmptyState()
+                            : SelectableTransactionList(
+                              // 正常显示列表
+                              scrollController: _scrollController,
+                              transactions: repository.periodicRecords,
+                              reservedSpaceHeight:
+                                  MediaQuery.of(context).size.height * 0.2,
+                              onDeleteSelected: (selected) {
+                                for (TransactionModel model in selected) {
+                                  globalDataModel.revertRecord(model);
+                                  DatabaseAgent().deleteTransaction(model);
+                                }
+                                repository.updateTodaysRecords();
+                                _loadTransactions();
+                                _isCollapsed = false;
+                              },
+                            );
                       },
                     ),
           ),

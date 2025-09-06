@@ -48,6 +48,7 @@ class TransactionRepository extends ChangeNotifier {
     else {
       periodicRecords = await fetchByPeriod(periodNumber);
     }
+    notifyListeners();
   }
 
   Future<void> updateRecords() async {
