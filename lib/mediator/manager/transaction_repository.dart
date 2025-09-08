@@ -53,7 +53,7 @@ class TransactionRepository extends ChangeNotifier {
 
   Future<void> updateRecords() async {
     await updateTodaysRecords();
-    updatePeridicRecords();
+    await updatePeridicRecords();
   }
 
   Future<List<TransactionModel>> fetchTodaysRecords() async {

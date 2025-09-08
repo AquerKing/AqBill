@@ -2,6 +2,8 @@ import 'package:bill/extension/data_formatter.dart';
 import 'package:bill/data/global_data_model.dart';
 import 'package:bill/data/transaction_model.dart';
 import 'package:bill/l10n/app_localizations.dart';
+import 'package:bill/mediator/manager/database_agent.dart';
+import 'package:bill/mediator/manager/transaction_repository.dart';
 import 'package:bill/resources/svg_icon.dart';
 import 'package:bill/widgets/reusable_transaction_dialog.dart';
 import 'package:flutter/material.dart';
@@ -207,7 +209,11 @@ class _SelectableTransactionListState extends State<SelectableTransactionList> {
       },
     );
     if (transaction != null) {
-      showAboutDialog(context: context, children: [Text(transaction.toJson())]);
+      // showAboutDialog(context: context, children: [Text(transaction.toJson())]);
+      setState(() {
+        DatabaseAgent().modifyTransaction(transaction.id, transaction);
+        TransactionRepository().updateRecords();
+      });
     }
   }
 

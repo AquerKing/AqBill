@@ -26,7 +26,7 @@ class _HistoryPageState extends State<HistoryPage> with WidgetsBindingObserver {
   bool _showScrollTopButton = false;
 
   // 日期选择器
-  late int _selectedDateTime;
+  // late int _selectedDateTime;
 
   // 交易数据与加载状态
   bool _isLoading = true; // 新增：加载状态标记
@@ -44,7 +44,7 @@ class _HistoryPageState extends State<HistoryPage> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     // 初始化选中日期
-    _selectedDateTime = TransactionRepository().periodNumber;
+    // _selectedDateTime = TransactionRepository().periodNumber;
     _loadTransactions();
     _scrollController.addListener(_handleScroll);
   }
@@ -92,7 +92,8 @@ class _HistoryPageState extends State<HistoryPage> with WidgetsBindingObserver {
 
     try {
       // 实际加载数据
-      await TransactionRepository().updateByPeriod(_selectedDateTime);
+      // await TransactionRepository().updateByPeriod(_selectedDateTime);
+      await TransactionRepository().updateRecords();
 
       setState(() {
         _isLoading = false; // 加载完成
@@ -187,10 +188,10 @@ class _HistoryPageState extends State<HistoryPage> with WidgetsBindingObserver {
                               SegmentedDatePicker(
                                 onDateSelected: (year, month, day) {
                                   setState(() {
-                                    _selectedDateTime =
+                                    TransactionRepository().periodNumber =
                                         year * 10000 + month * 100 + day;
+                                    _loadTransactions(); // 选择日期后重新加载
                                   });
-                                  _loadTransactions(); // 选择日期后重新加载
                                 },
                                 initialDate: DateTime.now(),
                                 firstDate: DateTime(2020),

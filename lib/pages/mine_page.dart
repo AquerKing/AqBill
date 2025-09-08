@@ -1,4 +1,5 @@
 import 'package:bill/data/global_data_model.dart';
+import 'package:bill/extension/data_formatter.dart';
 import 'package:bill/extension/date_getter.dart';
 import 'package:bill/l10n/app_localizations.dart';
 import 'package:bill/mediator/manager/transaction_repository.dart';
@@ -248,9 +249,6 @@ class _MinePageState extends State<MinePage> {
 
   @override
   Widget build(BuildContext context) {
-    // 格式化预算显示 (例如200000 -> "2000.00")
-    final displayBudget = (monthlyBudget / 100).toStringAsFixed(2);
-
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -432,7 +430,8 @@ class _MinePageState extends State<MinePage> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
-                              "¥$displayBudget",
+                              // "¥$displayBudget",
+                              DataFormatter.getAmountLocaleString(GlobalDataModel().get('UserData', 'budget.init')),
                               style: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w500,
