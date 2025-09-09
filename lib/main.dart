@@ -8,6 +8,7 @@ import 'package:bill/extension/id_generator.dart';
 import 'package:bill/l10n/app_localizations.dart';
 // import 'package:bill/mediator/manager/category_manager.dart';
 import 'package:bill/mediator/manager/database_agent.dart';
+import 'package:bill/mediator/provider/app_info.dart';
 import 'package:bill/mediator/provider/locale_provider.dart';
 import 'package:bill/mediator/provider/theme_provider.dart';
 import 'package:bill/mediator/manager/transaction_repository.dart';
@@ -19,6 +20,7 @@ import 'package:bill/pages/settings_page.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bill/pages/home_page.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 // import 'package:flutter_logger_plus/flutter_logger_plus.dart';
 import 'package:provider/provider.dart';
 
@@ -36,6 +38,8 @@ Future<void> main() async {
 
   // ThemeProvider().updateFromConfig();
   // await TransactionRepository().updateTodaysRecords();
+
+  AppData.loadPackageInfo(await PackageInfo.fromPlatform());
 
   await GlobalDataModel().readFile('UserConfig');
   ThemeProvider().updateFromConfig();
