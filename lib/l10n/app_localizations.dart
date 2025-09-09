@@ -405,12 +405,8 @@ abstract class AppLocalizations {
   /// No description provided for @aboutPage_VersionLabel.
   ///
   /// In en, this message translates to:
-  /// **'Version: {version}-{channel} ({buildNumber})'**
-  String aboutPage_VersionLabel(
-    String version,
-    String channel,
-    String buildNumber,
-  );
+  /// **'Version: {version} (build-{buildNumber})'**
+  String aboutPage_VersionLabel(String version, String buildNumber);
 
   /// No description provided for @aboutPage_AppDescriptionLabel.
   ///
