@@ -186,146 +186,47 @@ class _AppHomeState extends State<AppHome> with SingleTickerProviderStateMixin {
             ),
           ),
           // 添加抽屉的各项列表内容
-          ListTile(
-            leading: const Icon(Icons.clear, color: Colors.red),
-            title: Text('Reset Today\'s Data [DEBUG_ONLY]'),
-            onTap: () {
-              GlobalDataModel().clearTodaysTransactions();
-              Navigator.pop(context); // 关闭抽屉
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.timelapse, color: Colors.red),
-            title: Text('Force Set Next Month [DEBUG_ONLY]'),
-            onTap: () {
-              Navigator.pop(context); // 关闭抽屉
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.add, color: Colors.red),
-            title: Text('Add Some Records [DEBUG_ONLY]'),
-            onTap: () {
-              final List<TransactionModel> transacions = [
-                TransactionModel.fromMap({
-                  'id': IdGenerator().generateId(),
-                  'amount': Random.secure().nextInt(200000) + 100,
-                  'category': Random.secure().nextInt(11) + 10000,
-                  'comment': '',
-                  'date':
-                      20250000 +
-                      (Random.secure().nextInt(9) + 1) * 100 +
-                      (Random.secure().nextInt(30) + 1),
-                }),
-                TransactionModel.fromMap({
-                  'id': IdGenerator().generateId(),
-                  'amount': Random.secure().nextInt(200000) + 100,
-                  'category': Random.secure().nextInt(11) + 10000,
-                  'comment': '',
-                  'date':
-                      20250000 +
-                      (Random.secure().nextInt(9) + 1) * 100 +
-                      (Random.secure().nextInt(30) + 1),
-                }),
-                TransactionModel.fromMap({
-                  'id': IdGenerator().generateId(),
-                  'amount': Random.secure().nextInt(200000) + 100,
-                  'category': Random.secure().nextInt(11) + 10000,
-                  'comment': '',
-                  'date':
-                      20250000 +
-                      (Random.secure().nextInt(9) + 1) * 100 +
-                      (Random.secure().nextInt(30) + 1),
-                }),
-                TransactionModel.fromMap({
-                  'id': IdGenerator().generateId(),
-                  'amount': Random.secure().nextInt(200000) + 100,
-                  'category': Random.secure().nextInt(11) + 10000,
-                  'comment': '',
-                  'date':
-                      20250000 +
-                      (Random.secure().nextInt(9) + 1) * 100 +
-                      (Random.secure().nextInt(30) + 1),
-                }),
-                TransactionModel.fromMap({
-                  'id': IdGenerator().generateId(),
-                  'amount': Random.secure().nextInt(200000) + 100,
-                  'category': Random.secure().nextInt(11) + 10000,
-                  'comment': '',
-                  'date':
-                      20250000 +
-                      (Random.secure().nextInt(9) + 1) * 100 +
-                      (Random.secure().nextInt(30) + 1),
-                }),
-                TransactionModel.fromMap({
-                  'id': IdGenerator().generateId(),
-                  'amount': Random.secure().nextInt(200000) + 100,
-                  'category': Random.secure().nextInt(11) + 10000,
-                  'comment': '',
-                  'date':
-                      20250000 +
-                      (Random.secure().nextInt(9) + 1) * 100 +
-                      (Random.secure().nextInt(30) + 1),
-                }),
-                TransactionModel.fromMap({
-                  'id': IdGenerator().generateId(),
-                  'amount': Random.secure().nextInt(200000) + 100,
-                  'category': Random.secure().nextInt(11) + 10000,
-                  'comment': '',
-                  'date':
-                      20250000 +
-                      (Random.secure().nextInt(9) + 1) * 100 +
-                      (Random.secure().nextInt(30) + 1),
-                }),
-                TransactionModel.fromMap({
-                  'id': IdGenerator().generateId(),
-                  'amount': Random.secure().nextInt(200000) + 100,
-                  'category': Random.secure().nextInt(11) + 10000,
-                  'comment': '',
-                  'date':
-                      20250000 +
-                      (Random.secure().nextInt(9) + 1) * 100 +
-                      (Random.secure().nextInt(30) + 1),
-                }),
-                TransactionModel.fromMap({
-                  'id': IdGenerator().generateId(),
-                  'amount': Random.secure().nextInt(200000) + 100,
-                  'category': Random.secure().nextInt(11) + 10000,
-                  'comment': '',
-                  'date':
-                      20250000 +
-                      (Random.secure().nextInt(9) + 1) * 100 +
-                      (Random.secure().nextInt(30) + 1),
-                }),
-                TransactionModel.fromMap({
-                  'id': IdGenerator().generateId(),
-                  'amount': Random.secure().nextInt(200000) + 100,
-                  'category': Random.secure().nextInt(11) + 10000,
-                  'comment': '',
-                  'date':
-                      20250000 +
-                      (Random.secure().nextInt(9) + 1) * 100 +
-                      (Random.secure().nextInt(30) + 1),
-                }),
-                TransactionModel.fromMap({
-                  'id': IdGenerator().generateId(),
-                  'amount': Random.secure().nextInt(200000) + 100,
-                  'category': Random.secure().nextInt(11) + 10000,
-                  'comment': '',
-                  'date':
-                      20250000 +
-                      (Random.secure().nextInt(9) + 1) * 100 +
-                      (Random.secure().nextInt(30) + 1),
-                }),
-              ];
-
-              for (var element in transacions) {
-                DatabaseAgent().insertTransaction(element);
-                GlobalDataModel().insertRecord(element);
-              }
-              TransactionRepository().updateTodaysRecords();
-              Navigator.pop(context); // 关闭抽屉
-            },
-          ),
+          // ListTile(
+          //   leading: const Icon(Icons.clear, color: Colors.red),
+          //   title: Text('Reset Today\'s Data [DEBUG_ONLY]'),
+          //   onTap: () {
+          //     GlobalDataModel().clearTodaysTransactions();
+          //     Navigator.pop(context); // 关闭抽屉
+          //   },
+          // ),
+          // ListTile(
+          //   leading: const Icon(Icons.timelapse, color: Colors.red),
+          //   title: Text('Force Set Next Month [DEBUG_ONLY]'),
+          //   onTap: () {
+          //     Navigator.pop(context); // 关闭抽屉
+          //   },
+          // ),
+          // ListTile(
+          //   leading: const Icon(Icons.add, color: Colors.red),
+          //   title: Text('Add Some Records [DEBUG_ONLY]'),
+          //   onTap: () {
+          //     final List<TransactionModel> transacions = List.generate(10, (
+          //       index,
+          //     ) {
+          //       return TransactionModel.fromMap({
+          //         'id': IdGenerator().generateId(),
+          //         'amount': Random.secure().nextInt(200000) + 100,
+          //         'category': Random.secure().nextInt(11) + 10000,
+          //         'comment': '',
+          //         'date':
+          //             20250000 +
+          //             (Random.secure().nextInt(9) + 1) * 100 +
+          //             (Random.secure().nextInt(30) + 1),
+          //       });
+          //     });
+          //     for (var element in transacions) {
+          //       DatabaseAgent().insertTransaction(element);
+          //       GlobalDataModel().insertRecord(element);
+          //     }
+          //     TransactionRepository().updateTodaysRecords();
+          //     Navigator.pop(context); // 关闭抽屉
+          //   },
+          // ),
           ListTile(
             leading: const Icon(Icons.settings),
             title: Text(localizations.appDrawer_SettingsTextHint),
