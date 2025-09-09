@@ -181,9 +181,13 @@ class _HistoryPageState extends State<HistoryPage> with WidgetsBindingObserver {
                           child: Column(
                             spacing: 2,
                             children: [
-                              TransactionChartButtons(
-                                transactions:
-                                    TransactionRepository().periodicRecords,
+                              Consumer<TransactionRepository>(
+                                builder: (context, repository, child) {
+                                  return TransactionChartButtons(
+                                    transactions:
+                                        repository.periodicRecords,
+                                  );
+                                },
                               ),
                               SegmentedDatePicker(
                                 onDateSelected: (year, month, day) {
