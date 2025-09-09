@@ -388,7 +388,7 @@ class _HomePageState extends State<HomePage> {
                             transaction,
                           );
                           // repository.updateTodaysRecords();
-                          globalData.updateRecord(transaction, model);
+                          globalData.modifyRecord(transaction, model);
                           globalData.saveFile('UserData');
                           repository.updateRecords();
                         }

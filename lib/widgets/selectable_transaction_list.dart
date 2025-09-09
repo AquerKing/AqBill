@@ -212,6 +212,7 @@ class _SelectableTransactionListState extends State<SelectableTransactionList> {
       // showAboutDialog(context: context, children: [Text(transaction.toJson())]);
       setState(() {
         DatabaseAgent().modifyTransaction(transaction.id, transaction);
+        GlobalDataModel().modifyRecord(transaction, model);
         TransactionRepository().updateRecords();
       });
     }

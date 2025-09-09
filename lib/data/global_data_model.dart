@@ -85,7 +85,7 @@ class GlobalDataModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateRecord(TransactionModel model, TransactionModel oldModel) {
+  void modifyRecord(TransactionModel model, TransactionModel oldModel) {
     int amount = model.amount;
     int oldAmount = oldModel.amount;
 
