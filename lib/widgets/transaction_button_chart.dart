@@ -1,5 +1,4 @@
 import 'package:bill/l10n/app_localizations.dart';
-import 'package:bill/mediator/manager/category_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:bill/data/transaction_model.dart';
 import 'transaction_pie_chart.dart'; // 假设之前的饼图组件在这个文件中
@@ -19,7 +18,7 @@ class TransactionChartButtons extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
+            color: Colors.grey.withValues(alpha: 0.2),
             spreadRadius: 1,
             blurRadius: 3,
             offset: const Offset(0, 1),
@@ -41,7 +40,7 @@ class TransactionChartButtons extends StatelessWidget {
               ),
             ),
             // 分隔线
-            Container(width: 1, color: Colors.white.withOpacity(0.5)),
+            Container(width: 1, color: Colors.white.withValues(alpha: 0.5)),
             // 收入按钮
             Expanded(
               child: _buildChartButton(
@@ -166,7 +165,7 @@ class ChartDetailPage extends StatelessWidget {
     double totalAmount = 0;
     for (final transaction in transactions) {
       if (transaction.isExpense == isExpense && transaction.category != null) {
-        totalAmount += transaction.amount.abs().toInt() ~/ 100;
+        totalAmount += transaction.amount.abs().toInt() / 100;
       }
     }
 
