@@ -23,7 +23,7 @@ class MinePage extends StatefulWidget {
 class _MinePageState extends State<MinePage> {
   // 模拟用户数据
   String userName = GlobalDataModel().get('UserConfig', 'user.name');
-  int monthlyBudget = 200000;
+  int monthlyBudget = GlobalDataModel().get('UserData', 'budget.init');
   bool isNotificationEnabled = false;
   bool isBiometricEnabled = false;
 
@@ -127,7 +127,6 @@ class _MinePageState extends State<MinePage> {
                   // 处理输入的金额
                   if (controller.text.isNotEmpty) {
                     try {
-                      // 将输入的金额转换为100倍的整数 (例如2000.00 -> 200000)
                       final double inputValue = double.parse(controller.text);
                       final int newValue = (inputValue * 100).toInt();
 
@@ -263,10 +262,10 @@ class _MinePageState extends State<MinePage> {
                         ? DecorationImage(
                           image: FileImage(_backgroundImage!),
                           fit: BoxFit.cover, // 图片适应容器
-                          colorFilter: const ColorFilter.mode(
-                            Colors.black38,
-                            BlendMode.darken, // 使图片暗化，确保文字清晰可见
-                          ),
+                          // colorFilter: const ColorFilter.mode(
+                          //   Colors.black38,
+                          //   BlendMode.darken, // 使图片暗化，确保文字清晰可见
+                          // ),
                         )
                         : null,
                 gradient:
