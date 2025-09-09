@@ -55,7 +55,7 @@ class _AboutPageState extends State<AboutPage> {
             // 版权信息
             const SizedBox(height: 40),
             Text(
-              AppInfo.copyright,
+              AppData.copyright,
               style: const TextStyle(color: Colors.grey, fontSize: 12),
             ),
             const SizedBox(height: 20),
@@ -83,7 +83,7 @@ class _AboutPageState extends State<AboutPage> {
               children: [
                 // 应用名称
                 Text(
-                  AppInfo.applicationName,
+                  AppData.applicationName,
                   style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -94,9 +94,8 @@ class _AboutPageState extends State<AboutPage> {
                 // 版本信息
                 Text(
                   localizations.aboutPage_VersionLabel(
-                    AppInfo.version,
-                    AppInfo.channel,
-                    AppInfo.buildNumber,
+                    AppData.version,
+                    AppData.buildNumber,
                   ),
                   style: const TextStyle(color: Colors.grey, fontSize: 16),
                 ),
@@ -147,7 +146,7 @@ class _AboutPageState extends State<AboutPage> {
         ),
 
         // 开发者名称
-        Text(AppInfo.developer, style: const TextStyle(fontSize: 16)),
+        Text(AppData.developer, style: const TextStyle(fontSize: 16)),
         const SizedBox(height: 16),
 
         // 联系信息
@@ -157,13 +156,13 @@ class _AboutPageState extends State<AboutPage> {
             // 网站链接
             IconButton(
               icon: const Icon(Icons.language),
-              onPressed: () => _launchUrl(AppInfo.website),
+              onPressed: () => _launchUrl(AppData.website),
             ),
 
             // 邮件链接
             IconButton(
               icon: const Icon(Icons.email),
-              onPressed: () => _launchUrl("mailto:${AppInfo.email}"),
+              onPressed: () => _launchUrl("mailto:${AppData.email}"),
             ),
 
             // GitHub链接

@@ -124,13 +124,10 @@
     "@aboutPage_AppBar_Title": {},
     "helpPage_AppBar_Title": "帮助",
     "@helpPage_AppBar_Title": {},
-    "aboutPage_VersionLabel": "版本: {version}-{channel} ({buildNumber})",
+    "aboutPage_VersionLabel": "版本: {version} (build-{buildNumber})",
     "@aboutPage_VersionLabel": {
         "placeholders": {
             "version": {
-                "type": "String"
-            },
-            "channel": {
                 "type": "String"
             },
             "buildNumber": {
