@@ -1,3 +1,4 @@
+import 'package:bill/extension/date_getter.dart';
 import 'package:bill/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
@@ -5,14 +6,14 @@ enum _DatePickerType { year, month, day }
 
 class SegmentedDatePicker extends StatefulWidget {
   final Function(int year, int month, int day) onDateSelected;
-  final DateTime? initialDate;
+  final int initialDate;
   final DateTime firstDate;
   final DateTime lastDate;
 
   const SegmentedDatePicker({
     super.key,
     required this.onDateSelected,
-    this.initialDate,
+    required this.initialDate,
     required this.firstDate,
     required this.lastDate,
   });
@@ -38,10 +39,10 @@ class _SegmentedDatePickerState extends State<SegmentedDatePicker> {
   @override
   void initState() {
     super.initState();
-    final initial = widget.initialDate ?? DateTime.now();
-    _selectedYear = initial.year;
-    _selectedMonth = initial.month;
-    _selectedDay = initial.day;
+    final initial = widget.initialDate;
+    _selectedYear = initial ~/ 10000;
+    _selectedMonth = initial ~/ 100 % 100;
+    _selectedDay = initial % 100;
 
     _clampYear();
     _initYears();

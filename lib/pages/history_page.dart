@@ -197,7 +197,7 @@ class _HistoryPageState extends State<HistoryPage> with WidgetsBindingObserver {
                                     _loadTransactions(); // 选择日期后重新加载
                                   });
                                 },
-                                initialDate: DateTime.now(),
+                                initialDate: TransactionRepository().periodNumber,
                                 firstDate: DateTime(2020),
                                 lastDate: DateTime.now(),
                               ),
