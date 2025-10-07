@@ -103,4 +103,39 @@ abstract class DataFormatter {
   static String convertDateTimeToDateString(DateTime dateTime) {
     return '${dateTime.year.toString()}/${dateTime.month.toString().padLeft(2, '0')}/${dateTime.day.toString().padLeft(2, '0')}}';
   }
+
+  static String formatNumberString(String input) {
+    // 检查输入是否为空
+    if (input.isEmpty) {
+      return "000";
+    }
+
+    // 分割整数部分和小数部分
+    List<String> parts = input.split('.');
+
+    // 处理整数部分
+    String integerPart = parts[0];
+    // 移除可能存在的前导零，但保留至少一位
+    integerPart = integerPart.replaceAll(RegExp(r'^0+'), '');
+    if (integerPart.isEmpty) {
+      integerPart = '0';
+    }
+
+    // 处理小数部分，确保有两位数字
+    String decimalPart = '';
+    if (parts.length > 1) {
+      // 取小数点后的部分，最多两位
+      decimalPart = parts[1].substring(
+        0,
+        parts[1].length > 2 ? 2 : parts[1].length,
+      );
+    }
+    // 不足两位补零
+    while (decimalPart.length < 2) {
+      decimalPart += '0';
+    }
+
+    // 拼接结果
+    return integerPart + decimalPart;
+  }
 }

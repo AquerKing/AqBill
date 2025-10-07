@@ -1,5 +1,6 @@
 import 'package:bill/data/category_model.dart';
 import 'package:bill/data/transaction_model.dart';
+import 'package:bill/extension/data_formatter.dart';
 import 'package:bill/l10n/app_localizations.dart';
 import 'package:bill/mediator/manager/category_manager.dart';
 import 'package:bill/widgets/amount_input_field.dart';
@@ -164,16 +165,24 @@ class _ReusableTransactionDialogState extends State<ReusableTransactionDialog>
                 widget.isEditing
                     ? TransactionModel.fromMap({
                       "id": widget.initialModel!.id,
-                      "amount":
-                          (double.parse(_amountController.text) * 100).toInt(),
+                      "amount": int.parse(
+                        DataFormatter.formatNumberString(
+                          _amountController.text,
+                        ),
+                      ),
+                      // (double.parse(_amountController.text) * 100).toInt(),
                       "comment": _commentController.text,
                       "category": currentSelectedCategory!.id,
                       "date": widget.initialModel!.date,
                     })
                     : TransactionModel.optional(
                       // 新增：生成新记录
-                      amount:
-                          (double.parse(_amountController.text) * 100).toInt(),
+                      amount: int.parse(
+                        DataFormatter.formatNumberString(
+                          _amountController.text,
+                        ),
+                      ),
+                      // (double.parse(_amountController.text) * 100).toInt(),
                       comment: _commentController.text,
                       category: currentSelectedCategory,
                     );

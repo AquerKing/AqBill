@@ -254,6 +254,36 @@ class _AppHomeState extends State<AppHome> with SingleTickerProviderStateMixin {
               );
             },
           ),
+          ListTile(
+            leading: const Icon(Icons.restore),
+            title: Text('Reset Month Data'),
+            onTap: () {
+              showDialog(
+                context: context,
+                builder:
+                    (context) => AlertDialog(
+                      title: const Text('Confirm Action'),
+                      content: const Text(
+                        'Are you sure to reset month data? This cannot be reverted.',
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, false),
+                          child: Text(localizations.general_Cancel),
+                        ),
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, true),
+                          child: Text(localizations.general_Apply),
+                        ),
+                      ],
+                    ),
+              ).then((confirmed) {
+                if (confirmed) {
+                  GlobalDataModel().resetMonthData();
+                }
+              });
+            },
+          ),
         ],
       ),
     );
