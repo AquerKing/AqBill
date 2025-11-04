@@ -280,6 +280,7 @@ class _AppHomeState extends State<AppHome> with SingleTickerProviderStateMixin {
               ).then((confirmed) {
                 if (confirmed) {
                   GlobalDataModel().resetMonthData();
+                  GlobalDataModel().saveFile('UserData');
                 }
               });
             },

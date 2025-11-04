@@ -259,6 +259,7 @@ class GlobalDataModel extends ChangeNotifier {
       resetMonthData();
       _globalJson['AppData']!['app.last_run'] = todayYMNumber;
       GlobalDataModel().saveFile('AppData');
+      GlobalDataModel().saveFile('UserData');
     }
   }
 
